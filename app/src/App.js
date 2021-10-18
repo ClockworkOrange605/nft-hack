@@ -1,25 +1,48 @@
-import logo from './logo.svg';
+import { MetaMaskProvider, useMetaMask } from 'metamask-react'
 import './App.css';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <p>Creative Coding NFT</p>
+        <MetaMaskProvider>
+          <MetaMask />
+        </MetaMaskProvider>
       </header>
     </div>
-  );
+  )
+}
+
+function MetaMask() {
+  const { status, account, /*ethereum,*/ connect } = useMetaMask()
+
+  const avatarStyle = account ? { background: `linear-gradient(90deg, #${account.slice(2, 8)}, #${account.slice(-6)})` } : {}
+
+  return (
+    <div className="account">
+      {(status === 'initializing' || status === 'connecting') &&
+        <p>Connecting...</p>
+      }
+
+      {status === 'unavailable' &&
+        <p>
+          <a href="https://metamask.io/" rel="noreferrer" target="_blank">MetaMask</a> Required
+        </p>
+      }
+
+      {status === 'notConnected' &&
+        <button onClick={connect}>Connect</button>
+      }
+
+      {status === 'connected' &&
+        <p className="address">
+          <span>{account.slice(0, 8)}...{account.slice(-6)}</span>
+          <span className="avatar" style={avatarStyle}></span>
+        </p>
+      }
+    </div>
+  )
 }
 
 export default App;
