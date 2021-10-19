@@ -1,16 +1,38 @@
 .App {
   background-color: #000000;
-  text-align: center;
 }
 
-.App-header {
-  min-height: 100vh;
+.Header {
+  min-height: 100px;
+  max-height: 10vh;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
   font-size: calc(10px + 2vmin);
   color: #eeeeee;
+}
+
+.Main {
+  min-height: 80vh;
+  background-color: rgb(15, 15, 15);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.Footer {
+  min-height: 100px;
+  max-height: 10vh;
+}
+
+
+
+
+
+.account {
+  justify-self: end;
 }
 
 .account .address {
@@ -29,4 +51,12 @@
   justify-content: center;
   font-size: 15px;
   background: #ffffff;
+}
+
+
+
+
+.react-tabs__tab {
+  background: grey;
+  border-radius: 5px 5px 0 0;
 }
