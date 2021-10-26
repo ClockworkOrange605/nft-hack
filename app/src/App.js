@@ -1,27 +1,19 @@
-import { MetaMaskProvider } from 'metamask-react'
-import { useState } from 'react'
+// import { useMetaMask } from 'metamask-react'
 
 import Main from './components/layout/Main'
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
+
 import './App.css'
 
 function App() {
-  const [account, setAccount] = useState()
+  // const metamask = useMetaMask()
 
   return (
     <div className="App">
-      <MetaMaskProvider>
-        <Header
-          authorize={setAccount}
-        />
-
-        <Main
-          account={account}
-        />
-
-        <Footer />
-      </MetaMaskProvider>
+      <Header />
+      <Main />
+      <Footer />
     </div>
   )
 }

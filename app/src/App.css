@@ -5,11 +5,9 @@ html {
   padding: 0;
 }
 
-a {
-  color: #eeeeee;
+a { color: #eeeeee;
   text-decoration: none;
 }
-
 a:hover {
   color: #aaaaaa;
 }

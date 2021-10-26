@@ -4,11 +4,11 @@ const Footer = () => {
   return (
     <footer className="Footer">
       <div>
-        <a href="#">About Us</a>
+        {/* <a href="#">About Us</a> */}
         &nbsp;&nbsp;&nbsp;
-        <a href="#">How It Works</a>
+        {/* <a href="#">How It Works</a> */}
         &nbsp;&nbsp;&nbsp;
-        <a href="#">Blog</a>
+        {/* <a href="#">Blog</a> */}
       </div>
       <span>© 2022 CWO </span>
     </footer>

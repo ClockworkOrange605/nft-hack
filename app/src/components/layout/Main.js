@@ -1,6 +1,8 @@
-import * as monaco from 'monaco-editor'
+import { Switch, Route } from "react-router-dom"
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import 'react-tabs/style/react-tabs.css'
+
+import * as monaco from 'monaco-editor'
 
 import { useRef } from 'react'
 import { useState, useEffect } from 'react'
@@ -10,8 +12,23 @@ import './Main.css'
 const Main = () => {
   return (
     <main className="Main">
-      <p>Content goes here...</p>
-      {/* <IDE /> */}
+      <Switch>
+        <Route path="/account/tokens">
+          <p>Tokens goes here ...</p>
+        </Route>
+
+        <Route path="/account/drafts">
+          <IDE />
+        </Route>
+
+        <Route path="/collection">
+          <p>Collection goes here ...</p>
+        </Route>
+
+        <Route path="/">
+          <p>Content goes here ...</p>
+        </Route>
+      </Switch>
     </main>
   )
 }

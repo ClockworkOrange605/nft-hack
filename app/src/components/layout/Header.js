@@ -1,57 +1,62 @@
+import { Link } from "react-router-dom"
+
 import { useMetaMask } from 'metamask-react'
 
 import './Header.css'
 
-const Header = ({ authorize }) => {
+function Header() {
   return (
     <header className="Header">
       <div className="Logo">
-        <a href="/">Creative Coding NFT</a>
+        <Link to="/">Creative Coding NFT</Link>
         <nav className="nav mainNav">
-          <a href="#">Home</a>
-          <a href="#">Collection</a>
+          <Link to="/">Home</Link>
+          <Link to="/collection">Collection</Link>
         </nav>
       </div>
       <div className="Account">
-        <Avatar authorize={authorize} />
+        <Avatar />
         <nav className="nav accountNav">
-          <a href="#">My Collection</a>
-          <a href="#">My Sketches</a>
+          <Link to="/account/tokens">My Tokens</Link>
+          <Link to="/account/drafts">My Drafts</Link>
         </nav>
       </div>
     </header>
   )
 }
 
-function Avatar({ authorize }) {
-  const { status, account, ethereum, connect } = useMetaMask()
+function Avatar() {
+  const { status, account, connect } = useMetaMask()
+
   const avatarStyle = account ? { background: `linear-gradient(135deg, #${account.slice(2, 8)}, #${account.slice(-6)})` } : {}
 
-  const auth = async () => {
-    if (!account) {
-      const [address] = await connect()
-      const message = `${address}@crcode`
+  // const auth = async () => {
+  //   if (!account) {
+  //     const [address] = await connect()
+  //     const message = `${address}@crcode`
 
-      const signature = await ethereum.request({
-        method: 'personal_sign',
-        from: address,
-        params: [message, address]
-      })
+  //     const signature = await ethereum.request({
+  //       method: 'personal_sign',
+  //       from: address,
+  //       params: [message, address]
+  //     })
 
-      const response = await fetch(`auth/${address}`, {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json'
-        },
-        body: JSON.stringify({ signature })
-      })
+  //     const response = await fetch(`auth/${address}`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-type': 'application/json'
+  //       },
+  //       body: JSON.stringify({ signature })
+  //     })
 
-      console.log(await response.json())
-    }
-  }
+  //     console.log(await response.json())
+  //   }
+  // }
 
   return (
-    <p className="address" onClick={auth}>
+    <p className="address"
+      onClick={connect}
+    >
       {status === 'initializing' &&
         <span>Initializing...</span>}
 
