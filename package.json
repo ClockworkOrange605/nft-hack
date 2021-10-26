@@ -1,0 +1,25 @@
+{
+  "name": "nft-hack",
+  "version": "1.0.0",
+  "description": "Creative Coding NFT's Services",
+  "main": "index.js",
+  "scripts": {
+    "rpc:dev": "cd contracts && npx truffle develop",
+    "api:dev": "cd api && npm run dev",
+    "api:run": "cd api && npm start",
+    "app:dev": "cd app && npm start",
+    "app:build": "cd app && npm run build",
+    "temp": "echo $(pwd) && cd contracts && ls && echo $(pwd) && cd ../api && ls",
+    "install": "cd contracts && npm install && cd api && npm install && cd app && npm install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ClockworkOrange605/nft-hack.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ClockworkOrange605/nft-hack/issues"
+  },
+  "homepage": "https://github.com/ClockworkOrange605/nft-hack#readme"
+}
