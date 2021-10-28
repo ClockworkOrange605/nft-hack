@@ -8,15 +8,15 @@ function Header() {
   return (
     <header className="Header">
       <div className="Logo">
-        <Link to="/">Creative Coding NFT</Link>
-        <nav className="nav mainNav">
-          <Link to="/">Home</Link>
+        <Link to="/">Creative Coding NFT's</Link>
+        <nav id="mainMenu" className="nav">
+          {/* <Link to="/">Home</Link> */}
           <Link to="/collection">Collection</Link>
         </nav>
       </div>
       <div className="Account">
         <Avatar />
-        <nav className="nav accountNav">
+        <nav id="accountMenu" className="nav">
           <Link to="/account/tokens">My Tokens</Link>
           <Link to="/account/drafts">My Drafts</Link>
         </nav>
@@ -27,8 +27,6 @@ function Header() {
 
 function Avatar() {
   const { status, account, connect } = useMetaMask()
-
-  const avatarStyle = account ? { background: `linear-gradient(135deg, #${account.slice(2, 8)}, #${account.slice(-6)})` } : {}
 
   // const auth = async () => {
   //   if (!account) {
@@ -64,15 +62,24 @@ function Avatar() {
         <span>Connecting...</span>}
 
       {status === 'unavailable' &&
-        <span><a href="https://metamask.io/" rel="noreferrer" target="_blank">MetaMask</a> Required</span>}
+        <span><a href="https://metamask.io/" rel="noreferrer" target="_blank">MetaMask Required</a></span>}
 
       {status === 'notConnected' &&
         <span>Connect</span>}
 
       {status === 'connected' &&
-        <span>{account.slice(0, 10)}...{account.slice(-8)}</span>}
+        <span style={{ color: '#888888' }}>
+          0x
+          <span style={{ 'color': 'var(--primary-account-color)' }}>
+            {account.slice(2, 8)}
+          </span>
+          . . .
+          <span style={{ 'color': 'var(--secondary-account-color)' }}>
+            {account.slice(-6)}
+          </span>
+        </span>}
 
-      <span className="avatar" style={avatarStyle}></span>
+      <span className="avatar"></span>
     </p>
   )
 }

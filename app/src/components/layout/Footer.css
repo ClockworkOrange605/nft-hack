@@ -5,3 +5,7 @@
   justify-content: space-between;
   padding: 0 25px;
 }
+
+.Footer nav > a{
+  margin: 0 8px;
+}

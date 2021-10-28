@@ -21,5 +21,10 @@ a:hover {
   max-width: 80vw;
 
   display: grid;
-  grid-template-rows: minmax(10vh, 1fr) minmax(80vh, 10fr) minmax(10vh, 1fr);
+  grid-template-rows: 80px calc(100vh - 140px) 60px;
+}
+
+:root {
+  --primary-account-color: #111111;
+  --secondary-account-color: #aaaaaa;
 }

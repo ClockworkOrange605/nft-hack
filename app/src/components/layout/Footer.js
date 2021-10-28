@@ -1,15 +1,15 @@
+import { Link } from "react-router-dom"
+
 import './Footer.css'
 
 const Footer = () => {
   return (
     <footer className="Footer">
-      <div>
-        {/* <a href="#">About Us</a> */}
-        &nbsp;&nbsp;&nbsp;
-        {/* <a href="#">How It Works</a> */}
-        &nbsp;&nbsp;&nbsp;
-        {/* <a href="#">Blog</a> */}
-      </div>
+      <nav>
+        <Link to="/about">About Us</Link>
+        <Link to="/how-it-works">How It Works</Link>
+        <Link to="/blog">Blog</Link>
+      </nav>
       <span>© 2022 CWO </span>
     </footer>
   )
