@@ -19,6 +19,7 @@ function App() {
         '--secondary-account-color', `#${account.slice(-6)}`
       )
     } else {
+      // return defaults after logout
       document.documentElement.style.setProperty('--primary-account-color', '#111111')
       document.documentElement.style.setProperty('--secondary-account-color', '#aaaaaa')
     }

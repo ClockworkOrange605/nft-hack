@@ -1,25 +1,26 @@
 import { Link } from "react-router-dom"
-
 import { useMetaMask } from 'metamask-react'
-
 import './Header.css'
 
 function Header() {
+  const { account } = useMetaMask()
+
   return (
     <header className="Header">
       <div className="Logo">
         <Link to="/">Creative Coding NFT's</Link>
         <nav id="mainMenu" className="nav">
-          {/* <Link to="/">Home</Link> */}
           <Link to="/collection">Collection</Link>
         </nav>
       </div>
       <div className="Account">
         <Avatar />
-        <nav id="accountMenu" className="nav">
-          <Link to="/account/tokens">My Tokens</Link>
-          <Link to="/account/drafts">My Drafts</Link>
-        </nav>
+        {account &&
+          <nav id="accountMenu" className="nav">
+            <Link to="/account/tokens">My Tokens</Link>
+            <Link to="/account/drafts">My Drafts</Link>
+          </nav>
+        }
       </div>
     </header>
   )
@@ -28,32 +29,32 @@ function Header() {
 function Avatar() {
   const { status, account, connect } = useMetaMask()
 
-  // const auth = async () => {
-  //   if (!account) {
-  //     const [address] = await connect()
-  //     const message = `${address}@crcode`
+  const auth = async () => {
+    if (!account) {
+      const [address] = await connect()
+      // const message = `${address}@crcode`
 
-  //     const signature = await ethereum.request({
-  //       method: 'personal_sign',
-  //       from: address,
-  //       params: [message, address]
-  //     })
+      // const signature = await ethereum.request({
+      //   method: 'personal_sign',
+      //   from: address,
+      //   params: [message, address]
+      // })
 
-  //     const response = await fetch(`auth/${address}`, {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-type': 'application/json'
-  //       },
-  //       body: JSON.stringify({ signature })
-  //     })
+      // const response = await fetch(`auth/${address}`, {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-type': 'application/json'
+      //   },
+      //   body: JSON.stringify({ signature })
+      // })
 
-  //     console.log(await response.json())
-  //   }
-  // }
+      // console.log(await response.json())
+    }
+  }
 
   return (
-    <p className="address"
-      onClick={connect}
+    <p className="Address"
+      onClick={auth}
     >
       {status === 'initializing' &&
         <span>Initializing...</span>}
@@ -79,7 +80,7 @@ function Avatar() {
           </span>
         </span>}
 
-      <span className="avatar"></span>
+      <span className="Avatar"></span>
     </p>
   )
 }

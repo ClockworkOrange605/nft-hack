@@ -8,20 +8,18 @@ html {
 a { color: #eeeeee;
   text-decoration: none;
 }
+
 a:hover {
   color: #aaaaaa;
 }
 
 .App {
-  margin: 0 auto;
-
-  max-height: 100vh;
-
-  min-width: 1000px;
-  max-width: 80vw;
-
   display: grid;
   grid-template-rows: 80px calc(100vh - 140px) 60px;
+  max-height: 100vh;
+  min-width: 1000px;
+  max-width: 80vw;
+  margin: 0 auto;
 }
 
 :root {

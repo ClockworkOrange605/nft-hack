@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 
 import './Footer.css'
 
-const Footer = () => {
+function Footer() {
   return (
     <footer className="Footer">
       <nav>

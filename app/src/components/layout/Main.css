@@ -13,7 +13,6 @@
 }
 
 .Main::-webkit-scrollbar-track {
-  background-color: var(--primary-account-color);
   background-color: #111111;
   border-radius: 100px;
 }
@@ -21,9 +20,7 @@
 .Main::-webkit-scrollbar-thumb {
   border: 2px solid transparent;
   border-radius: 100px;
-  /* background-color: var(--secondary-account-color); */
   background-color: #aaaaaa;
-  background-clip: content-box;
 }
 
 /* .IDE {

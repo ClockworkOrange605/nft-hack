@@ -1,57 +1,92 @@
 .Header {
-  background-color: rgb(15, 15, 15);
-  color: #eeeeee;
-  font-size: 22px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  color: #eeeeee;
+  background-color: rgb(15, 15, 15);
+  font-size: 22px;
 }
 
 .Header .Logo {
-  padding: 0 25px;
   height: 80px;
   min-width: 248px;
+  padding: 0 25px;
   line-height: 80px;
 }
 
 .Header .Logo > a {
-  margin: auto;
   background: -webkit-linear-gradient(135deg, var(--primary-account-color), var(--secondary-account-color));
   background-clip: unset;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.nav {
+.Header .Account {
+  height: 80px;
+  min-width: 248px;
+  padding: 0 25px;
+  line-height: 80px;
+  cursor: pointer;
+}
+
+.Header .Account.connected {
+  cursor: default;
+}
+
+.Header .Account:hover {
+  color:#aaaaaa;
+}
+
+.Header .Account .Address {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  align-items: center;
+  margin: 0;
+}
+
+.Header .Account .Address .Avatar {
+  display: flex;
+  justify-content: center;
+  height: 48px;
+  width: 48px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, var(--primary-account-color), var(--secondary-account-color));
+  margin-left: 10px;
+}
+
+.Header nav {
   position: absolute;
   top: 80px;
   background-color: rgb(15, 15, 15);
-  /* background-color: green; */
   min-width: 248px;
   padding: 10px 25px 25px;
   margin: 0 -25px;
-  z-index: 99;
   line-height: normal;
+  z-index: 99;
 }
-.nav a {
+
+.Header nav a {
   display: block;
   margin: 5px 0;
 }
 
-.Logo #mainMenu {
+.Header .Logo #mainMenu {
   display: none;
 }
-.Logo:hover #mainMenu {
+
+.Header .Logo:hover #mainMenu {
   display: block;
   animation: growDown 300ms ease-in-out;
   transform-origin: top center;
 }
 
-.Account #accountMenu {
+.Header .Account #accountMenu {
   display: none;
 }
-.Account:hover #accountMenu {
+
+.Header .Account:hover #accountMenu {
   display: block;
   animation: growDown 300ms ease-in-out;
   transform-origin: top center;
@@ -67,50 +102,4 @@
   100% {
       transform: scaleY(1);
   }
-}
-
-@keyframes slideDown {
-  0% {
-    opacity: 0;
-    transform: translateY(-60px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.Account {
-  height: 80px;
-  min-width: 248px;
-  line-height: 80px;
-  padding: 0 25px;
-  justify-self: end;
-  cursor: pointer;
-}
-
-.Account:hover {
-  color:#aaaaaa;
-}
-
-.Account .address {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: end;
-  margin: 0;
-}
-
-.Account .address .avatar {
-  display: flex;
-  width: 48px;
-  height: 48px;
-  border-radius: 24px;
-  text-align: center;
-  justify-content: center;
-  font-size: 15px;
-  background: #ffffff;
-  margin-left: 10px;
-  background: linear-gradient(135deg, var(--primary-account-color), var(--secondary-account-color));
 }
