@@ -17,6 +17,7 @@ function Header() {
         <Avatar />
         {account &&
           <nav id="accountMenu" className="nav">
+            <Link to="/account/editor">Editor</Link>
             <Link to="/account/tokens">My Tokens</Link>
             <Link to="/account/drafts">My Drafts</Link>
           </nav>
@@ -32,6 +33,7 @@ function Avatar() {
   const auth = async () => {
     if (!account) {
       const [address] = await connect()
+      console.log(address)
       // const message = `${address}@crcode`
 
       // const signature = await ethereum.request({

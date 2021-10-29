@@ -8,17 +8,20 @@ import { useRef } from 'react'
 import { useState, useEffect } from 'react'
 import './Main.css'
 
-
 const Main = () => {
   return (
     <main className="Main">
       <Switch>
+        <Route path="/account/editor">
+          <IDE />
+        </Route>
+
         <Route path="/account/tokens">
           <p>Tokens goes here ...</p>
         </Route>
 
         <Route path="/account/drafts">
-          <IDE />
+          <p>Token drafts goes here ...</p>
         </Route>
 
         <Route path="/collection">
@@ -53,11 +56,12 @@ function IDE() {
   return (
     <div className="IDE">
       <div className="workspace">
-        <Tabs defaultIndex={3}>
+        <Tabs defaultIndex={2}>
           <TabList>
             <Tab>index.html</Tab>
             <Tab>style.css</Tab>
             <Tab>main.js</Tab>
+            {/* <Tab>+</Tab> */}
           </TabList>
 
           <TabPanel>
@@ -85,9 +89,9 @@ function IDE() {
           </TabPanel>
         </Tabs>
       </div>
-      {/* <div className="preview">
-        <iframe src="https://ya.ru/" style={{ width: '100%', height: '100%' }} />
-      </div> */}
+      <div className="preview">
+        <iframe src="http://localhost:4000/" style={{ width: '100%', height: '100%' }} />
+      </div>
     </div>
   )
 }
@@ -95,6 +99,7 @@ function IDE() {
 function Editor({ id, language, source }) {
   const editorRef = useRef()
   const [editor, setEditor] = useState(null)
+
 
   //TODO: refactor editor init
   useEffect(() => {
@@ -106,13 +111,16 @@ function Editor({ id, language, source }) {
 
           language: language,
           value: source,
+
+          minimap: { enabled: false },
+          rulers: [60, 120],
         })
       )
     }
   }, [])
 
   return (
-    <div id={id} ref={editorRef} style={{ width: "50vw", height: "70vh" }} />
+    <div ref={editorRef} id={id} className="EditorInstance" />
   )
 }
 
