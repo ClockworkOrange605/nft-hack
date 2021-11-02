@@ -1,6 +1,6 @@
 function Home() {
   return (
-    <p>
+    <div>
       <p>
         Determined to make the salon-going public recognize his genius, Lantier spends the rest of his life trying and failing to complete what he believes will be his masterpiece, watching from the sidelines as his former friends and rivals win fame and fortune for watered-down versions of his radical pictorial innovations. In the end, broken and destitute, he hangs himself in his studio next to the painting, which isn’t a masterpiece at all but an incoherent mess. Zola had once championed the Impressionists, but this novel seemed to suggest they had failed to live up to their potential. It was scathing enough to end his friendship with Cézanne. After the book’s publication, they never spoke again.
       </p>
@@ -40,7 +40,7 @@ function Home() {
       <p>
         Martin’s initial artistic breakthrough comes when he has a profound aesthetic encounter with a roadmap en route to his grandmother’s funeral in the French countryside. Houellebecq narrates the incident in perfect deadpan: “Never had he contemplated an object as magnificent, as rich in emotion and meaning, as this 1/150,000-scale Michelin map of the Creuse and the Haute-Vienne.” He begins producing exquisite, large-scale photographs of Michelin maps, to the great delight of the Michelin Group, whose publicist, a Slavic goddess named Olga, recognizes that the universe has dropped a gift into her lap. A solo exhibition is organized at the company’s headquarters, to ecstatic reviews; one especially orotund example, ascribed to the real-world Le Monde art critic Patrick Kéchichian, describes Martin as “adopt[ing] the point of view of a God coparticipating, alongside man, in the (re)construction of the world,” comparing the artist’s “rational theology” to that of Thomas Aquinas. One day, the Michelin series is simply done, and Martin moves on, practically on a whim, to the paintings that cement his reputation as a twenty-first-century master: portraits representing a cross-section of contemporary professions, from horse butcher to tech CEO. The critic Kéchichian believes the series represents “God descended among men . . . to pay homage, with his full presence, to the sacerdotal dignity of human labor”; the art historians of the future call it “a relational and dialectical image of the functioning of the economy of the whole”; the artist says it’s simply “an account of the world.”
       </p>
-    </p>
+    </div>
   )
 }
 

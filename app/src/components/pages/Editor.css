@@ -1,0 +1,52 @@
+.IDE {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  min-width: 100px;
+  min-height: 300px;
+  /* height: calc(100vh - 250px); */
+  /* height: 500px; */
+  gap: 5px;
+}
+
+.IDE .Preview {
+  aspect-ratio: 16 / 9;
+}
+
+.IDE .Preview .Window {
+  background-color: white;
+  width: 390px;
+  height: 270px;
+  border: none;
+}
+
+.IDE .Preview .Console {
+  background: #242424;
+  width: 390px;
+  height: 125px;
+  overflow-y: scroll;
+}
+
+.IDE .Preview .Console::-webkit-scrollbar {
+  width: 10px;
+}
+.IDE .Preview .Console::-webkit-scrollbar-track {
+  border-left: 1px solid #2b2b2b;
+}
+.IDE .Preview .Console::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+}
+.IDE .Preview .Console:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(121, 121, 121, .4);
+}
+
+.IDE .EditorInstance {
+  min-width: 100px;
+  min-height: 300px;
+  /* height: calc(100vh - 250px) */
+  height: 450px;
+}
+
+.react-tabs__tab {
+  background: grey;
+  border-radius: 5px 5px 0 0;
+}

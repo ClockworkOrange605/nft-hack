@@ -22,36 +22,3 @@
   border-radius: 100px;
   background-color: #aaaaaa;
 }
-
-.IDE {
-  display: grid;
-  grid-template-columns: 1.5fr 1fr;
-  min-width: 100px;
-  min-height: 300px;
-  height: calc(100vh - 250px)
-}
-
-.IDE .preview {
-  background-color: white;
-  /* max-width: 400px; */
-  aspect-ratio: 16 / 9;
-}
-
-.IDE .preview iframe {
-  border: none;
-}
-
-.IDE .EditorInstance {
-  min-width: 100px;
-  min-height: 300px;
-  height: calc(100vh - 250px)
-}
-
-/* .IDE .workspace { }
-.IDE .preview { } */
-
-
-.react-tabs__tab {
-  background: grey;
-  border-radius: 5px 5px 0 0;
-}
