@@ -32,6 +32,9 @@ function IDE() {
 
   return (
     <div className="IDE">
+      <div className="toolbox">
+
+      </div>
       <div className="workspace">
         <Editor previewFrame={iframeRef} consoleFrame={consoleRef} />
 
@@ -73,6 +76,7 @@ function IDE() {
           className="Window"
           ref={iframeRef}
           onLoad={captureLogs}
+        // sandbox="allow-same-origin allow-scripts"
         />
         <div className="Console" ref={consoleRef}>
           <Console
@@ -113,19 +117,12 @@ function Editor({ previewFrame, consoleFrame }) {
   useEffect(() => {
     if (editor) {
       fetch('/api/preview/0x9f45deB282DA4AA19E4965E3483DCA19D93CaE01/01/source/index.html')
+        // fetch('/preview/0x9f45deB282DA4AA19E4965E3483DCA19D93CaE01/01/source/index.html')
         // fetch('/preview/0x9f45deB282DA4AA19E4965E3483DCA19D93CaE01/01/source/style.css')
         // fetch('/preview/0x9f45deB282DA4AA19E4965E3483DCA19D93CaE01/01/source/sketch.js')
         .then(async (res) => {
           const source = await res.text()
           const language = res.headers.get('Content-type').split(';')[0].split('/')[1]
-
-          // previewFrame.current.contentWindow.console.log = function log(val) {
-          //   window.top.postMessage(val, '*')
-
-          //   var span = document.createElement("span")
-          //   span.appendChild(document.createTextNode(val))
-          //   consoleFrame.current.appendChild(span)
-          // }
 
           monaco.editor.setModelLanguage(editor.getModel(), language)
 
@@ -134,6 +131,7 @@ function Editor({ previewFrame, consoleFrame }) {
           // previewFrame.current.srcdoc = source
           // previewFrame.current.src = res.url
           previewFrame.current.src = '/api/preview/0x9f45deB282DA4AA19E4965E3483DCA19D93CaE01/01/source/index.html'
+          // previewFrame.current.src = 'http://localhost:4000/preview/0x9f45deB282DA4AA19E4965E3483DCA19D93CaE01/01/source/index.html'
         })
     }
   }, [editor])

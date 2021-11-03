@@ -1,6 +1,10 @@
 .IDE {
   display: grid;
+  grid-template-areas:
+    "toolbox toolbox"
+    "workspace preview";
   grid-template-columns: 1.5fr 1fr;
+  grid-template-rows: auto 1fr;
   min-width: 100px;
   min-height: 300px;
   /* height: calc(100vh - 250px); */
@@ -8,7 +12,17 @@
   gap: 5px;
 }
 
+.IDE .toolbox {
+  grid-area: toolbox;
+  min-height: 30px;
+}
+
+.IDE .workspace {
+  grid-area: workspace;
+}
+
 .IDE .Preview {
+  grid-area: preview;
   aspect-ratio: 16 / 9;
 }
 

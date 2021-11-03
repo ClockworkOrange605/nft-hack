@@ -17,7 +17,10 @@ function Header() {
         <Avatar />
         {account &&
           <nav id="accountMenu" className="nav">
+            <Link to="/account/auth">Auth</Link>
+            <Link to="/account/create">Templates</Link>
             <Link to="/account/editor">Editor</Link>
+            <hr style={{ border: '1px dashed #aaaaaa' }} />
             <Link to="/account/tokens">My Tokens</Link>
             <Link to="/account/drafts">My Drafts</Link>
           </nav>
