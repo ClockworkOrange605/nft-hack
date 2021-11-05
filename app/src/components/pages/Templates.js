@@ -1,8 +1,13 @@
 import './Templates.css'
 
+import { useAuth } from '../../providers/AuthProvider'
+
 import logoP5 from '../../assets/p5js.png'
 
 function Templates() {
+  const { setReqired } = useAuth()
+  setReqired(true)
+
   return (
     <div className="Templates">
       <h1>Choose Template</h1>

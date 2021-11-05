@@ -33,34 +33,8 @@ function Header() {
 function Avatar() {
   const { status, account, connect } = useMetaMask()
 
-  const auth = async () => {
-    if (!account) {
-      const [address] = await connect()
-      console.log(address)
-      // const message = `${address}@crcode`
-
-      // const signature = await ethereum.request({
-      //   method: 'personal_sign',
-      //   from: address,
-      //   params: [message, address]
-      // })
-
-      // const response = await fetch(`auth/${address}`, {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-type': 'application/json'
-      //   },
-      //   body: JSON.stringify({ signature })
-      // })
-
-      // console.log(await response.json())
-    }
-  }
-
   return (
-    <p className="Address"
-      onClick={auth}
-    >
+    <p className="Address">
       {status === 'initializing' &&
         <span>Initializing...</span>}
 
@@ -71,7 +45,7 @@ function Avatar() {
         <span><a href="https://metamask.io/" rel="noreferrer" target="_blank">MetaMask Required</a></span>}
 
       {status === 'notConnected' &&
-        <span>Connect</span>}
+        <span onClick={connect}>Connect</span>}
 
       {status === 'connected' &&
         <span style={{ color: '#888888' }}>

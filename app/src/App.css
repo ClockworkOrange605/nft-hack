@@ -26,6 +26,18 @@ a:hover {
   margin: 0 auto;
 }
 
+.App .overlay {
+  position: absolute;
+  width: 1000px;
+  height: calc(100vh - 140px);
+  background: rgba(0, 0, 0, 0.95);
+  top: 80px;
+  padding: -5px;
+  margin: auto;
+  font-size: 50px;
+  text-align: center;
+}
+
 :root {
   --primary-account-color: #111111;
   --secondary-account-color: #aaaaaa;
