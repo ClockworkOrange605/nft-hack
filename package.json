@@ -8,9 +8,7 @@
     "api:dev": "cd api && npm run dev",
     "api:run": "cd api && npm start",
     "app:dev": "cd app && npm start",
-    "app:build": "cd app && npm run build",
-    "temp": "echo $(pwd) && cd contracts && ls && echo $(pwd) && cd ../api && ls",
-    "install": "cd contracts && npm install && cd api && npm install && cd app && npm install"
+    "app:build": "cd app && npm run build"
   },
   "repository": {
     "type": "git",

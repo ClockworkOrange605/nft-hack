@@ -3,7 +3,7 @@ version: "3.9"
 services:
     rpc:
         image: node:12
-        command: npx truffle develop
+        command: bash -c "npm install && npx truffle develop"
         working_dir: /app
         volumes:
             - ./contracts:/app
@@ -12,10 +12,11 @@ services:
 
     api:
         image: node:12
-        command: npm run dev
+        command: bash -c "npm install && npm run dev"
         working_dir: /app
         volumes:
             - ./api:/app
+            - ./storage:/app/storage
         ports:
             - 4000:4000
         environment:
@@ -24,12 +25,14 @@ services:
 
     app:
         image: node:12
-        command: npm start
+        command: bash -c "npm install && npm start"
         working_dir: /app
         volumes:
             - ./app:/app
         ports:
             - 3000:3000
+        environment:
+            PROXY: http://api:4000
 
     mongo:
         image: mongo:4.4
