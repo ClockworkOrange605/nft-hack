@@ -1,7 +1,6 @@
 // import { MongoClient } from 'mongodb'
 
 import express from 'express'
-import bodyParser from 'body-parser'
 
 import fs from 'fs'
 import path from 'path'
@@ -10,28 +9,35 @@ import glob from 'glob'
 import jwt from 'jsonwebtoken'
 import ethSigUtils from 'eth-sig-util'
 
-// console.log(process.env.ETHER_RPC)
-// console.log(process.env.MONGO_URI)
-
-const port = 4000
-const secret = 'shhhhh'
+const config = {
+  app: {
+    port: 4000
+  },
+  auth: {
+    secret: 'shhhhh'
+  },
+  db: {
+    uri: process.env.MONGO_URI
+  },
+  rpc: {
+    uri: process.env.ETHER_RPC
+  }
+}
 
 const api = express()
-
-api.use(bodyParser.json())
+api.use(express.json())
 
 api.get('/', (req, res) => {
-  res.send({
-    timestamp: Date.now()
-  })
+  res.send({ timestamp: Date.now() })
 })
 
 /* Auth */
 function authMiddleware(req, res, next) {
-  const address = req.params.address
-  const token = req.headers['x-auth-token']
+  const { address } = req.params
+  const { "x-auth-token": token } = req.headers
 
-  const { account } = jwt.verify(token, secret)
+  const { account } = jwt.verify(token, config.auth.secret)
+
   res.locals.account = account
 
   if (account == address)
@@ -41,14 +47,14 @@ function authMiddleware(req, res, next) {
 }
 
 api.post('/auth/:address', (req, res) => {
-  const address = req.params.address
-  const signature = req.body.signature
+  const { address } = req.params
+  const { signature } = req.body
 
-  const message = `${address}@crcode`
-  const account = ethSigUtils.recoverPersonalSignature({ data: message, sig: signature })
-
-  const token = jwt.sign({ account, signature }, secret)
-  console.log(token)
+  const account = ethSigUtils.recoverPersonalSignature({
+    data: `${address}@crcode`,
+    sig: signature
+  })
+  const token = jwt.sign({ account, signature }, config.auth.secret)
 
   if (account == address)
     res.send({ account, token })
@@ -56,14 +62,15 @@ api.post('/auth/:address', (req, res) => {
     res.status(403).send({ error: 'Invalid signature' })
 })
 
-api.get('/auth/:address/check', authMiddleware, async (req, res) => {
+api.get('/auth/:address/check', authMiddleware, (req, res) => {
   res.send(res.locals)
 })
 
-/* Create NFT */
-api.post('/:address/nft/create/', authMiddleware, async (req, res) => {
-  const { account } = res.locals
+/* NFT */
+api.post('/:address/nft/create/', authMiddleware, (req, res) => {
+  const { address } = req.params
   const { type, version } = req.body
+  const { account } = res.locals
 
   //TODO: create DB record
   const id = Date.now()
@@ -101,26 +108,12 @@ api.get('/test', async (req, res) => {
   })
 })
 
-// api.use('/preview', express.static('storage'))
+//TODO: add auth middlware (Make sure preview page keep working)
 api.use('/preview', express.static('storage/nfts'))
 
-// api.get('/test2', async (req, res) => {
-//   const address = '0x9f45deB282DA4AA19E4965E3483DCA19D93CaE01'
-//   const project = '01'
-//   const filename = 'index.html'
-
-//   // const path = `./storage/${address}/${project}/source/${filename}`
-//   const filePath = path.resolve(`./storage/${address}/${filename}`)
-
-//   const file = fs.readFileSync(filePath, 'utf-8')
-
-//   res.send(file)
-// })
-
-api.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+api.listen(config.app.port, () => {
+  console.log(`Example app listening at http://localhost:${config.app.port}`)
 })
-
 
 /* Utils */
 function copy(from, to) { //accepting glob pattern
