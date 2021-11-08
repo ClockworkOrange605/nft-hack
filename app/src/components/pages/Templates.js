@@ -3,10 +3,18 @@ import './Templates.css'
 import { useAuth } from '../../providers/AuthProvider'
 
 import logoP5 from '../../assets/p5js.png'
+import { useEffect } from 'react'
 
 function Templates() {
-  const { setReqired } = useAuth()
-  setReqired(true)
+  const { account, check, auth } = useAuth()
+
+  // useEffect(() => {
+  //   if (!account) {
+  //     if (!check()) {
+  //       auth()
+  //     }
+  //   }
+  // })
 
   return (
     <div className="Templates">

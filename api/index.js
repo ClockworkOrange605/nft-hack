@@ -9,40 +9,15 @@ import path from 'path'
 import jwt from 'jsonwebtoken'
 import ethSigUtils from 'eth-sig-util'
 
+// console.log(process.env.ETHER_RPC)
+// console.log(process.env.MONGO_URI)
+
 const port = 4000
 const secret = 'shhhhh'
 
 const api = express()
 
-console.log(process.env.ETHER_RPC)
-console.log(process.env.MONGO_URI)
-
-// const client = new MongoClient(process.env.MONGO_URI)
-
-// const dbName = 'test';
-
-// async function main() {
-//   // Use connect method to connect to the server
-//   await client.connect();
-//   console.log('Connected successfully to server');
-//   const db = client.db(dbName);
-//   const collection = db.collection('test');
-
-//   // the following code examples can be pasted here...
-//   // const insertResult = await collection.insertMany([{ a: 1 }, { a: 2 }, { a: 3 }]);
-//   // console.log('Inserted documents =>', insertResult);
-
-//   return 'done.';
-// }
-
-// main()
-//   .then(console.log)
-//   .catch(console.error)
-//   .finally(() => client.close());
-
 api.use(bodyParser.json())
-
-api.use('/preview', express.static('storage'))
 
 api.get('/', (req, res) => {
   res.send({
@@ -51,7 +26,6 @@ api.get('/', (req, res) => {
 })
 
 /* Auth */
-
 function authMiddleware(req, res, next) {
   const address = req.params.address
   const token = req.headers['x-auth-token']
@@ -66,8 +40,6 @@ function authMiddleware(req, res, next) {
 }
 
 api.post('/auth/:address', (req, res) => {
-  console.log('POST', '/auth/:address')
-
   const address = req.params.address
   const signature = req.body.signature
 
@@ -84,8 +56,6 @@ api.post('/auth/:address', (req, res) => {
 })
 
 api.get('/auth/:address/check', authMiddleware, async (req, res) => {
-  console.log('GET', '/auth/:address/check', req.headers)
-
   res.send(res.locals)
 })
 
@@ -113,18 +83,20 @@ api.get('/test', async (req, res) => {
   })
 })
 
-api.get('/test2', async (req, res) => {
-  const address = '0x9f45deB282DA4AA19E4965E3483DCA19D93CaE01'
-  const project = '01'
-  const filename = 'index.html'
+api.use('/preview', express.static('storage'))
 
-  // const path = `./storage/${address}/${project}/source/${filename}`
-  const filePath = path.resolve(`./storage/${address}/${filename}`)
+// api.get('/test2', async (req, res) => {
+//   const address = '0x9f45deB282DA4AA19E4965E3483DCA19D93CaE01'
+//   const project = '01'
+//   const filename = 'index.html'
 
-  const file = fs.readFileSync(filePath, 'utf-8')
+//   // const path = `./storage/${address}/${project}/source/${filename}`
+//   const filePath = path.resolve(`./storage/${address}/${filename}`)
 
-  res.send(file)
-})
+//   const file = fs.readFileSync(filePath, 'utf-8')
+
+//   res.send(file)
+// })
 
 api.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)

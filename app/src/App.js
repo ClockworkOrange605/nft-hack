@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useMetaMask } from 'metamask-react'
 
-import { useAuth } from './providers/AuthProvider'
+import { AuthProvider } from './providers/AuthProvider'
 
 import Main from './components/layout/Main'
 import Header from './components/layout/Header'
@@ -11,7 +11,6 @@ import './App.css'
 
 function App() {
   const { account: address, ethereum } = useMetaMask()
-  const { account, auth, check, isRequired } = useAuth()
 
   useEffect(async () => {
     // Set Color Scheme
@@ -29,29 +28,27 @@ function App() {
     }
 
     // API Auth
-    if (address && !account && isRequired) {
-      if (! await check(address)) {
-        const message = `${address}@crcode`
-        const signature = await ethereum.request({
-          method: 'personal_sign',
-          from: address,
-          params: [message, address]
-        })
+    // if (address && !account && isRequired) {
+    //   // if (! await check(address)) {
+    //   const message = `${address}@crcode`
+    //   const signature = await ethereum.request({
+    //     method: 'personal_sign',
+    //     from: address,
+    //     params: [message, address]
+    //   })
 
-        auth(address, signature)
-      }
-    }
+    //   auth(address, signature)
+    //   // }
+    // }
   }, [address])
 
   return (
     <div className="App">
-      <Header />
-      <Main />
-      <Footer />
-
-      <div className="overlay" style={{ visibility: (!account && isRequired) ? 'visible' : 'hidden' }}>
-        <p>Sign Message to continue</p>
-      </div>
+      <AuthProvider>
+        <Header />
+        <Main />
+        <Footer />
+      </AuthProvider>
     </div>
   )
 }
