@@ -3,12 +3,18 @@ import { useState, useEffect } from 'react'
 // import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import { Console, Hook } from 'console-feed'
 
+import { useAuth } from '../../providers/AuthProvider'
+
 import * as monaco from 'monaco-editor'
 
 // import 'react-tabs/style/react-tabs.css'
 import './Editor.css'
+import { useParams } from 'react-router'
 
 function IDE() {
+  const { id } = useParams()
+  const params = useParams()
+  console.log(params, id)
   const [logs, setLogs] = useState([])
 
   const iframeRef = useRef()
@@ -33,10 +39,11 @@ function IDE() {
   return (
     <div className="IDE">
       <div className="toolbox">
-
+        <button>Remove</button>
+        <button>Mint</button>
       </div>
       <div className="workspace">
-        <Editor previewFrame={iframeRef} consoleFrame={consoleRef} />
+        <Editor draftId={id} previewFrame={iframeRef} consoleFrame={consoleRef} />
 
         {/* <Tabs defaultIndex={2}>
           <TabList>
@@ -90,7 +97,9 @@ function IDE() {
   )
 }
 
-function Editor({ previewFrame, consoleFrame }) {
+function Editor({ draftId, previewFrame, consoleFrame }) {
+  const { account } = useAuth()
+
   const editorRef = useRef()
   const [editor, setEditor] = useState(null)
 
@@ -100,41 +109,31 @@ function Editor({ previewFrame, consoleFrame }) {
         monaco.editor.create(editorRef.current, {
           theme: 'vs-dark',
           scrollBeyondLastLine: false,
-
-          // value: source,
-
-          // language: language,
-          // language: 'html',
-          // language: 'javascript',
-
           minimap: { enabled: false },
-          rulers: [60, 120],
+          // rulers: [60, 120],
         })
       )
     }
   })
 
   useEffect(() => {
-    if (editor) {
-      fetch('/api/preview/0x9f45deB282DA4AA19E4965E3483DCA19D93CaE01/01/source/index.html')
-        // fetch('/preview/0x9f45deB282DA4AA19E4965E3483DCA19D93CaE01/01/source/index.html')
-        // fetch('/preview/0x9f45deB282DA4AA19E4965E3483DCA19D93CaE01/01/source/style.css')
-        // fetch('/preview/0x9f45deB282DA4AA19E4965E3483DCA19D93CaE01/01/source/sketch.js')
-        .then(async (res) => {
-          const source = await res.text()
-          const language = res.headers.get('Content-type').split(';')[0].split('/')[1]
+    if (account) {
+      const indexFile = `/preview/${account}/${draftId}/source/index.html`
 
-          monaco.editor.setModelLanguage(editor.getModel(), language)
+      if (editor) {
+        fetch(indexFile)
+          .then(async (res) => {
+            const source = await res.text()
+            const language = res.headers.get('Content-type').split(';')[0].split('/')[1]
 
-          editor.setValue(source)
+            monaco.editor.setModelLanguage(editor.getModel(), language)
+            editor.setValue(source)
+          })
+      }
 
-          // previewFrame.current.srcdoc = source
-          // previewFrame.current.src = res.url
-          previewFrame.current.src = '/api/preview/0x9f45deB282DA4AA19E4965E3483DCA19D93CaE01/01/source/index.html'
-          // previewFrame.current.src = 'http://localhost:4000/preview/0x9f45deB282DA4AA19E4965E3483DCA19D93CaE01/01/source/index.html'
-        })
+      if (editor) { previewFrame.current.src = indexFile }
     }
-  }, [editor])
+  }, [account, editor])
 
   return (
     <div ref={editorRef} className="EditorInstance" />

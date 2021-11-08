@@ -5,6 +5,7 @@ import bodyParser from 'body-parser'
 
 import fs from 'fs'
 import path from 'path'
+import glob from 'glob'
 
 import jwt from 'jsonwebtoken'
 import ethSigUtils from 'eth-sig-util'
@@ -59,6 +60,23 @@ api.get('/auth/:address/check', authMiddleware, async (req, res) => {
   res.send(res.locals)
 })
 
+/* Create NFT */
+api.post('/:address/nft/create/', authMiddleware, async (req, res) => {
+  const { account } = res.locals
+  const { type, version } = req.body
+
+  //TODO: create DB record
+  const id = Date.now()
+
+  const templatePath = `/storage/templates/${type}/${version}/*`
+  const nftSourcePath = `/storage/nfts/${account}/${id}/source/`
+
+  console.log(templatePath, '->', nftSourcePath)
+  copy(templatePath, nftSourcePath)
+
+  res.send({ id })
+})
+
 /* Editor */
 api.get('/test', async (req, res) => {
   const address = '0x9f45deB282DA4AA19E4965E3483DCA19D93CaE01'
@@ -83,7 +101,8 @@ api.get('/test', async (req, res) => {
   })
 })
 
-api.use('/preview', express.static('storage'))
+// api.use('/preview', express.static('storage'))
+api.use('/preview', express.static('storage/nfts'))
 
 // api.get('/test2', async (req, res) => {
 //   const address = '0x9f45deB282DA4AA19E4965E3483DCA19D93CaE01'
@@ -101,3 +120,18 @@ api.use('/preview', express.static('storage'))
 api.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
+
+
+/* Utils */
+function copy(from, to) { //accepting glob pattern
+  const wildcard = from.indexOf('*') !== -1;
+  const pattern = !wildcard && fs.lstatSync(from).isDirectory() ? `${from}/**/*` : from;
+  glob.sync(pattern).forEach(file => {
+    const fromDirname = path.dirname(from.replace(/\/\*.*/, '/wildcard'));
+    const target = file.replace(fromDirname, to);
+    const [targetDir, recursive] = [path.dirname(target), true];
+    !fs.existsSync(targetDir) && fs.mkdirSync(targetDir, { recursive });
+    fs.lstatSync(file).isDirectory() ?
+      fs.mkdirSync(target, { recursive }) : fs.copyFileSync(file, target);
+  })
+}

@@ -10,7 +10,7 @@ import Footer from './components/layout/Footer'
 import './App.css'
 
 function App() {
-  const { account: address, ethereum } = useMetaMask()
+  const { account: address } = useMetaMask()
 
   useEffect(async () => {
     // Set Color Scheme
@@ -26,20 +26,6 @@ function App() {
       document.documentElement.style.setProperty('--primary-account-color', '#111111')
       document.documentElement.style.setProperty('--secondary-account-color', '#aaaaaa')
     }
-
-    // API Auth
-    // if (address && !account && isRequired) {
-    //   // if (! await check(address)) {
-    //   const message = `${address}@crcode`
-    //   const signature = await ethereum.request({
-    //     method: 'personal_sign',
-    //     from: address,
-    //     params: [message, address]
-    //   })
-
-    //   auth(address, signature)
-    //   // }
-    // }
   }, [address])
 
   return (

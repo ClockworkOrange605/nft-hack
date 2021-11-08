@@ -1,3 +1,6 @@
 *
 */
 !.gitignore
+!/templates/
+!/nfts/
+!/templates/**

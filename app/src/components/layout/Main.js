@@ -12,7 +12,7 @@ const Main = () => {
   return (
     <main className="Main">
       <Switch>
-        <Route path="/account/editor">
+        <Route path="/account/editor/:id">
           <IDE />
         </Route>
         <Route path="/account/create">
