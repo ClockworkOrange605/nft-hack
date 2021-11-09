@@ -1,25 +1,22 @@
-import { createContext, useState, useMemo, useContext, useEffect } from 'react'
+import { createContext, useContext, useMemo } from 'react'
+import { useState, useEffect } from 'react'
 import { useMetaMask } from 'metamask-react'
 
 const AuthContext = createContext({})
-
-const apiPrefix = ''
 
 function AuthProvider({ children }) {
   const { account: address, chainId, ethereum, connect } = useMetaMask()
 
   const [account, setAccount] = useState()
 
-  const memoedValue = useMemo(() => ({
-    account, auth, check,
-  }), [account])
+  const memoedValue = useMemo(() => ({ account, check, auth }), [account])
+
+  // TODO: add chainId verification
+  // if (chainId != 0x1)
 
   useEffect(async () => {
     if (!address) await connect()
   }, [address])
-
-  //TODO: add chainId verification
-  //  if (chainId != 0x1)
 
   useEffect(async () => {
     if (!account && address)
@@ -34,32 +31,27 @@ function AuthProvider({ children }) {
       params: [`${address}@crcode`, address]
     })
 
-    return fetch(`${apiPrefix}/auth/${address}`, {
+    const response = await fetch(`/auth/${address}`, {
       method: 'POST',
-      headers: {
-        'Content-type': 'application/json'
-      },
+      headers: { 'Content-type': 'application/json' },
       body: JSON.stringify({ signature })
     })
-      .then(async (res) => {
-        const data = await res.json()
 
-        setAccount(data.account)
-        sessionStorage.setItem(data.account, data.token)
+    const data = await response.json()
+    sessionStorage.setItem(data.account, data.token)
+    setAccount(data.account)
 
-        return data.account
-      })
+    return data.account
   }
 
   async function check() {
     const token = sessionStorage.getItem(address)
 
-    const response = await fetch(
-      `${apiPrefix}/auth/${address}/check`,
-      { headers: { 'x-auth-token': token } }
-    )
-    const data = await response.json()
+    const response = await fetch(`/auth/${address}/check`, {
+      headers: { 'x-auth-token': token }
+    })
 
+    const data = await response.json()
     setAccount(data.account)
 
     return data.account
@@ -68,7 +60,7 @@ function AuthProvider({ children }) {
   return (
     <AuthContext.Provider value={memoedValue}>
       {children}
-      <div className="overlay" style={{
+      <div className="Overlay" style={{
         visibility: (!address || !account) ? 'visible' : 'hidden'
       }}>
         {!address && <p>Connect To Metamask</p>}
@@ -82,5 +74,5 @@ function useAuth() {
   return useContext(AuthContext)
 }
 
-export default useAuth
-export { useAuth, AuthProvider }
+export default AuthProvider
+export { useAuth }

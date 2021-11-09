@@ -1,14 +1,10 @@
-html {
-  margin: 0 auto;
-  padding: 0;
+:root {
+  --primary-account-color: #111111;
+  --secondary-account-color: #aaaaaa;
 }
 
-body {
-  background-color: black;
-  color: white;
-}
-
-a { color: #eeeeee;
+a {
+  color: #eeeeee;
   text-decoration: none;
 }
 
@@ -26,7 +22,7 @@ a:hover {
   margin: 0 auto;
 }
 
-.overlay {
+.Overlay {
   position: absolute;
   width: 1000px;
   height: calc(100vh - 140px);
@@ -36,9 +32,4 @@ a:hover {
   margin: 0 auto;
   font-size: 50px;
   text-align: center;
-}
-
-:root {
-  --primary-account-color: #111111;
-  --secondary-account-color: #aaaaaa;
 }
