@@ -1,0 +1,22 @@
+.Drafts {
+  display: grid;
+  grid-template-columns: repeat(4, 200px);
+  justify-content: space-evenly;
+  gap: 25px;
+  padding: 25px;
+}
+
+.Drafts .Draft {
+  max-height: 200px;
+  background: rgb(40, 40, 40);
+  border: 1px solid var(--primary-account-color);
+  border-radius: 15px;
+  text-align: center;
+  cursor:pointer
+}
+
+.Drafts .Draft:hover {
+  border: 1px solid var(--secondary-account-color);
+  background: rgb(55, 55, 55);
+  color: #aaaaaa;
+}

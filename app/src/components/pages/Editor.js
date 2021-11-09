@@ -10,11 +10,10 @@ import * as monaco from 'monaco-editor'
 // import 'react-tabs/style/react-tabs.css'
 import './Editor.css'
 import { useParams } from 'react-router'
+import { Link } from 'react-router-dom'
 
 function IDE() {
   const { id } = useParams()
-  const params = useParams()
-  console.log(params, id)
   const [logs, setLogs] = useState([])
 
   const iframeRef = useRef()
@@ -39,8 +38,9 @@ function IDE() {
   return (
     <div className="IDE">
       <div className="toolbox">
-        <button>Remove</button>
-        <button>Mint</button>
+        <Link to={`/account/nft/${id}/mint`}>
+          <button style={{ float: 'right' }}>Mint</button>
+        </Link>
       </div>
       <div className="workspace">
         <Editor draftId={id} previewFrame={iframeRef} consoleFrame={consoleRef} />

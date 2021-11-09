@@ -4,7 +4,7 @@ import { useAuth } from '../../providers/AuthProvider'
 
 import './Templates.css'
 
-import logoP5 from '../../assets/p5js.png'
+import logoP5 from '../../assets/p5js.svg'
 
 function Templates() {
   const history = useHistory()
@@ -23,7 +23,7 @@ function Templates() {
     }).then(async (res) => {
       const data = await res.json()
       const { id } = data
-      history.push(`/account/editor/${id}`)
+      history.push(`/account/nft/${id}/edit`)
     })
   }
 

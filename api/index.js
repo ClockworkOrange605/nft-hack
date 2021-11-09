@@ -1,6 +1,5 @@
-// import { MongoClient } from 'mongodb'
-
 import express from 'express'
+import { MongoClient, ObjectId } from 'mongodb'
 
 import fs from 'fs'
 import path from 'path'
@@ -17,7 +16,8 @@ const config = {
     secret: 'shhhhh'
   },
   db: {
-    uri: process.env.MONGO_URI
+    uri: process.env.MONGO_URI,
+    name: 'crcode'
   },
   rpc: {
     uri: process.env.ETHER_RPC
@@ -26,6 +26,8 @@ const config = {
 
 const api = express()
 api.use(express.json())
+
+const client = new MongoClient(config.db.uri)
 
 api.get('/', (req, res) => {
   res.send({ timestamp: Date.now() })
@@ -36,14 +38,16 @@ function authMiddleware(req, res, next) {
   const { address } = req.params
   const { "x-auth-token": token } = req.headers
 
-  const { account } = jwt.verify(token, config.auth.secret)
+  try {
+    const { account } = jwt.verify(token, config.auth.secret)
+    res.locals.account = account
 
-  res.locals.account = account
-
-  if (account == address)
-    next()
-  else
-    res.status(403).send({ error: 'Invalid token' })
+    if (account == address) next()
+    else res.status(403).send({ error: 'Invalid token' })
+  }
+  catch (error) {
+    res.status(403).send({ error: error.message })
+  }
 }
 
 api.post('/auth/:address', (req, res) => {
@@ -67,13 +71,23 @@ api.get('/auth/:address/check', authMiddleware, (req, res) => {
 })
 
 /* NFT */
-api.post('/:address/nft/create/', authMiddleware, (req, res) => {
+api.post('/:address/nft/create/', authMiddleware, async (req, res) => {
   const { address } = req.params
   const { type, version } = req.body
   const { account } = res.locals
 
-  //TODO: create DB record
-  const id = Date.now()
+  //TODO: refactor DB connection
+  await client.connect()
+  const db = client.db(config.db.name)
+  const collection = db.collection('nfts')
+
+  const { insertedId: id } = await collection.insertOne({
+    address: account,
+    template: {
+      type, version
+    },
+    created_at: Date.now()
+  })
 
   const templatePath = `/storage/templates/${type}/${version}/*`
   const nftSourcePath = `/storage/nfts/${account}/${id}/source/`
@@ -82,6 +96,35 @@ api.post('/:address/nft/create/', authMiddleware, (req, res) => {
   copy(templatePath, nftSourcePath)
 
   res.send({ id })
+})
+
+api.get('/:address/nft/list/', authMiddleware, async (req, res) => {
+  const { address } = req.params
+  const { account } = res.locals
+
+  //TODO: refactor DB connection
+  await client.connect()
+  const db = client.db(config.db.name)
+  const collection = db.collection('nfts')
+
+  const nfts = await collection.find({ address: account }).toArray()
+
+  res.send(nfts)
+})
+
+api.get('/:address/nft/:id/', authMiddleware, async (req, res) => {
+  const { address, id } = req.params
+  const { account } = res.locals
+
+  //TODO: refactor DB connection
+  await client.connect()
+  const db = client.db(config.db.name)
+  const collection = db.collection('nfts')
+
+  const nft = await collection.findOne({ _id: ObjectId(id), address: account })
+  console.log(nft)
+
+  res.send(nft)
 })
 
 /* Editor */

@@ -17,12 +17,10 @@ function Header() {
         <Avatar />
         {account &&
           <nav id="accountMenu" className="nav">
-            <Link to="/account/auth">Auth</Link>
-            <Link to="/account/create">Templates</Link>
-            <Link to="/account/editor">Editor</Link>
+            <Link to="/account/nft/create">Create New NFT</Link>
+            <Link to="/account/nft/list">My Sketches</Link>
             <hr style={{ border: '1px dashed #aaaaaa' }} />
-            <Link to="/account/tokens">My Tokens</Link>
-            <Link to="/account/drafts">My Drafts</Link>
+            <Link to="/account/tokens">My Collection</Link>
           </nav>
         }
       </div>
