@@ -7,6 +7,7 @@ import Templates from '../pages/Templates'
 import Drafts from '../pages/Drafts'
 import Editor from '../pages/Editor'
 import Minter from "../pages/Minter"
+import Publisher from "../pages/Publisher"
 
 import './Main.css'
 
@@ -29,6 +30,9 @@ const Main = () => {
         </Route>
         <Route path="/account/nft/:id/mint">
           <Minter />
+        </Route>
+        <Route path="/account/nft/:id/publish">
+          <Publisher />
         </Route>
         <Route path="/account/nft/list">
           <Drafts />

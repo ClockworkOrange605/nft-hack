@@ -122,6 +122,27 @@ api.get('/:address/nft/:id/', authMiddleware, async (req, res) => {
   const collection = db.collection('nfts')
 
   const nft = await collection.findOne({ _id: ObjectId(id), address: account })
+
+  res.send(nft)
+})
+
+api.post('/:address/nft/:id/update', authMiddleware, async (req, res) => {
+  const { address, id } = req.params
+  const { metadata } = req.body
+  const { account } = res.locals
+
+  console.log(req.body)
+  console.log(metadata)
+
+  //TODO: refactor DB connection
+  await client.connect()
+  const db = client.db(config.db.name)
+  const collection = db.collection('nfts')
+
+  const nft = await collection.updateOne(
+    { _id: ObjectId(id), address: account },
+    { $set: { metadata: metadata } }
+  )
   console.log(nft)
 
   res.send(nft)
@@ -153,6 +174,10 @@ api.get('/test', async (req, res) => {
 
 //TODO: add auth middlware (Make sure preview page keep working)
 api.use('/preview', express.static('storage/nfts'))
+
+//TODO: remove
+api.use('/temp', express.static('storage/temp'))
+
 
 api.listen(config.app.port, () => {
   console.log(`Example app listening at http://localhost:${config.app.port}`)
