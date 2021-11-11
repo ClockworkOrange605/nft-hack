@@ -23,7 +23,10 @@ function IDE() {
   }, [logs])
 
   const { account } = useAuth()
+  const [file, setFile] = useState('index.html')
   const [files, setFiles] = useState([])
+
+  const [saveMethod, setSaveMethod] = useState()
 
   useEffect(() => {
     if (account && id) {
@@ -41,10 +44,14 @@ function IDE() {
 
   useEffect(() => {
     if (account) {
-      const indexFile = `/preview/${account}/${id}/source/index.html`
-      iframeRef.current.src = indexFile
+      reload()
     }
   }, [account])
+
+  function reload() {
+    iframeRef.current.src = `/preview/${account}/${id}/source/index.html`
+    setLogs([])
+  }
 
   function captureLogs() {
     Hook(
@@ -53,18 +60,13 @@ function IDE() {
     )
   }
 
-  const [file, setFile] = useState('index.html')
-
-  // function selectFile(filename) {
-  //   setFile(filename)
-  // }
-
   return (
     <div className="IDE">
       <div className="toolbox">
         <Link to={`/account/nft/${id}/mint`}>
           <button style={{ float: 'right' }}>Mint</button>
         </Link>
+        <button onClick={() => saveMethod()} style={{ float: 'right' }}>Save</button>
       </div>
       <div className="workspace">
         <div>
@@ -79,6 +81,8 @@ function IDE() {
           fileName={file}
           previewFrame={iframeRef}
           consoleFrame={consoleRef}
+          setSaveMethod={setSaveMethod}
+          reloadFrame={reload}
         />
       </div>
       <div className="Preview">
@@ -100,7 +104,7 @@ function IDE() {
   )
 }
 
-function Editor({ draftId, fileName, previewFrame, consoleFrame }) {
+function Editor({ draftId, fileName, previewFrame, consoleFrame, setSaveMethod, reloadFrame }) {
   const { account } = useAuth()
 
   const editorRef = useRef()
@@ -133,12 +137,26 @@ function Editor({ draftId, fileName, previewFrame, consoleFrame }) {
             editor.setValue(source)
           })
 
-        // editor.getModel().onDidChangeContent((event) => {
-        //   console.log(event)
-        // })
+        setSaveMethod(() => save)
       }
     }
   }, [account, editor, fileName])
+
+  function save() {
+    const content = editor.getValue()
+    console.log(fileName, content)
+    fetch(`/${account}/nft/${draftId}/files/${fileName}/save`, {
+      method: 'POST',
+      headers: {
+        'Content-type': 'text/plain',
+        'x-auth-token': sessionStorage.getItem(account)
+      },
+      body: content
+    }).then(async (res) => {
+      const data = await res.json()
+      reloadFrame()
+    })
+  }
 
   return (
     <div ref={editorRef} className="EditorInstance" />

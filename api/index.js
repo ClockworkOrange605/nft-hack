@@ -26,6 +26,7 @@ const config = {
 
 const api = express()
 api.use(express.json())
+api.use(express.text({ type: 'text/*' }))
 
 const client = new MongoClient(config.db.uri)
 
@@ -150,7 +151,7 @@ api.get('/:address/nft/:id/files', authMiddleware, async (req, res) => {
   const { address, id } = req.params
   const { account } = res.locals
 
-  const dir = await fs.promises.opendir(`./storage/nfts/${account}/${id}/source/`);
+  const dir = await fs.promises.opendir(`./storage/nfts/${account}/${id}/source/`)
 
   const files = []
   let current
@@ -167,6 +168,23 @@ api.get('/:address/nft/:id/files', authMiddleware, async (req, res) => {
   console.log(files)
 
   res.send({ files })
+})
+
+api.post('/:address/nft/:id/files/:file/save', authMiddleware, async (req, res) => {
+  const { address, id, file } = req.params
+  const content = req.body
+  const { account } = res.locals
+
+  const path = `./storage/nfts/${account}/${id}/source/${file}`
+
+  // console.log(path, content)
+
+  const result = fs.writeFileSync(path, content)
+
+  res.send({
+    debug: true,
+    result
+  })
 })
 
 //TODO: add auth middlware (Make sure preview page keep working)
