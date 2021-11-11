@@ -1,36 +1,12 @@
 import { createContext, useContext, useMemo } from 'react'
-import { useState, useEffect } from 'react'
-import { useMetaMask } from 'metamask-react'
+import { useState } from 'react'
 
 const AuthContext = createContext({})
 
 function AuthProvider({ children }) {
-  const { account: address, chainId, ethereum, connect } = useMetaMask()
-
   const [account, setAccount] = useState()
 
-  const memoedValue = useMemo(() => ({ account, check, auth }), [account])
-
-  // TODO: add chainId verification
-  // if (chainId != 0x1)
-
-  useEffect(async () => {
-    if (!address) await connect()
-  }, [address])
-
-  useEffect(async () => {
-    if (!account && address)
-      if (!await check())
-        await auth()
-  }, [address, account])
-
-  async function auth() {
-    const signature = await ethereum.request({
-      method: 'personal_sign',
-      from: address,
-      params: [`${address}@crcode`, address]
-    })
-
+  async function auth(address, signature) {
     const response = await fetch(`/auth/${address}`, {
       method: 'POST',
       headers: { 'Content-type': 'application/json' },
@@ -44,7 +20,7 @@ function AuthProvider({ children }) {
     return data.account
   }
 
-  async function check() {
+  async function check(address) {
     const token = sessionStorage.getItem(address)
 
     const response = await fetch(`/auth/${address}/check`, {
@@ -57,14 +33,27 @@ function AuthProvider({ children }) {
     return data.account
   }
 
+  const [connecting, setConnecting] = useState(false)
+  const [authorizing, setAuthorizing] = useState(false)
+
+  const stateMemo = useMemo(() => ({
+    account,
+    auth, check,
+    setConnecting,
+    setAuthorizing
+  }), [account])
+
+  // TODO: add chainId verification
+  // if (chainId != 0x1)
+
   return (
-    <AuthContext.Provider value={memoedValue}>
+    <AuthContext.Provider value={stateMemo}>
       {children}
       <div className="Overlay" style={{
-        visibility: (!address || !account) ? 'visible' : 'hidden'
+        visibility: (connecting || authorizing) ? 'visible' : 'hidden'
       }}>
-        {!address && <p>Connect To Metamask</p>}
-        {!account && <p>Sign Message to continue</p>}
+        {connecting && <p>Connect To Metamask</p>}
+        {authorizing && <p>Sign Message to continue</p>}
       </div>
     </AuthContext.Provider>
   )

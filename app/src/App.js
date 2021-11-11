@@ -12,7 +12,7 @@ import './App.css'
 function App() {
   const { account: address } = useMetaMask()
 
-  useEffect(async () => {
+  useEffect(() => {
     // Set Color Scheme
     if (address) {
       document.documentElement.style.setProperty(
