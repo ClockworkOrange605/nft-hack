@@ -1,13 +1,11 @@
 import { useRef } from 'react'
 import { useState, useEffect } from 'react'
-// import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import { Console, Hook } from 'console-feed'
 
 import { useAuth } from '../../providers/AuthProvider'
 
 import * as monaco from 'monaco-editor'
 
-// import 'react-tabs/style/react-tabs.css'
 import './Editor.css'
 import { useParams } from 'react-router'
 import { Link } from 'react-router-dom'
@@ -24,9 +22,29 @@ function IDE() {
     consoleRef.current.scrollTop = consoleRef.current.scrollHeight
   }, [logs])
 
-  // iframeRef.current.onLoad(() => {
-  //   console.log(loaded)
-  // })
+  const { account } = useAuth()
+  const [files, setFiles] = useState([])
+
+  useEffect(() => {
+    if (account && id) {
+      fetch(`/${account}/nft/${id}/files`, {
+        headers: {
+          'x-auth-token': sessionStorage.getItem(account)
+        }
+      }).then(async (res) => {
+        const data = await res.json()
+        setFiles(data.files)
+        console.log(files)
+      })
+    }
+  }, [account, id])
+
+  useEffect(() => {
+    if (account) {
+      const indexFile = `/preview/${account}/${id}/source/index.html`
+      iframeRef.current.src = indexFile
+    }
+  }, [account])
 
   function captureLogs() {
     Hook(
@@ -34,6 +52,12 @@ function IDE() {
       log => setLogs(logs => [...logs, ...log])
     )
   }
+
+  const [file, setFile] = useState('index.html')
+
+  // function selectFile(filename) {
+  //   setFile(filename)
+  // }
 
   return (
     <div className="IDE">
@@ -43,40 +67,19 @@ function IDE() {
         </Link>
       </div>
       <div className="workspace">
-        <Editor draftId={id} previewFrame={iframeRef} consoleFrame={consoleRef} />
-
-        {/* <Tabs defaultIndex={2}>
-          <TabList>
-            <Tab>index.html</Tab>
-            <Tab>style.css</Tab>
-            <Tab>main.js</Tab>
-            <Tab>+</Tab>
-          </TabList>
-
-          <TabPanel>
-            <Editor
-              id="editorHTML"
-              language="html"
-              source={'<!DOCTYPE html>\n<html lang="en">\n\t<head>\n\t\t<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>\n\t\t<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.sound.min.js"></script>\n\t\t<link rel="stylesheet" type="text/css" href="style.css">\n\t\t<meta charset="utf-8" />\n\t</head>\n\t<body>\n\t\t<script src="sketch.js"></script>\n\t</body>\n</html>'}
-            />
-          </TabPanel>
-
-          <TabPanel>
-            <Editor
-              id="editorCSS"
-              language="css"
-              source={"html, body {\n\tmargin: 0;\n\tpadding: 0;\n}\ncanvas {\n\tdisplay: block;\n}"}
-            />
-          </TabPanel>
-
-          <TabPanel>
-            <Editor
-              id="editorJS"
-              language="javascript"
-              source={"function setup() {\n\tcreateCanvas(400, 400);\n}\n\nfunction draw() {\n\tbackground(220);\n}"}
-            />
-          </TabPanel>
-        </Tabs> */}
+        <div>
+          {files && (
+            files.map(file => (
+              <p onClick={() => setFile(file.name)}>{file.name}</p>
+            ))
+          )}
+        </div>
+        <Editor
+          draftId={id}
+          fileName={file}
+          previewFrame={iframeRef}
+          consoleFrame={consoleRef}
+        />
       </div>
       <div className="Preview">
         <iframe
@@ -97,7 +100,7 @@ function IDE() {
   )
 }
 
-function Editor({ draftId, previewFrame, consoleFrame }) {
+function Editor({ draftId, fileName, previewFrame, consoleFrame }) {
   const { account } = useAuth()
 
   const editorRef = useRef()
@@ -118,7 +121,7 @@ function Editor({ draftId, previewFrame, consoleFrame }) {
 
   useEffect(() => {
     if (account) {
-      const indexFile = `/preview/${account}/${draftId}/source/index.html`
+      const indexFile = `/preview/${account}/${draftId}/source/${fileName}`
 
       if (editor) {
         fetch(indexFile)
@@ -129,11 +132,13 @@ function Editor({ draftId, previewFrame, consoleFrame }) {
             monaco.editor.setModelLanguage(editor.getModel(), language)
             editor.setValue(source)
           })
-      }
 
-      if (editor) { previewFrame.current.src = indexFile }
+        // editor.getModel().onDidChangeContent((event) => {
+        //   console.log(event)
+        // })
+      }
     }
-  }, [account, editor])
+  }, [account, editor, fileName])
 
   return (
     <div ref={editorRef} className="EditorInstance" />

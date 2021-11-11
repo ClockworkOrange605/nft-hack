@@ -131,9 +131,6 @@ api.post('/:address/nft/:id/update', authMiddleware, async (req, res) => {
   const { metadata } = req.body
   const { account } = res.locals
 
-  console.log(req.body)
-  console.log(metadata)
-
   //TODO: refactor DB connection
   await client.connect()
   const db = client.db(config.db.name)
@@ -149,17 +146,17 @@ api.post('/:address/nft/:id/update', authMiddleware, async (req, res) => {
 })
 
 /* Editor */
-api.get('/test', async (req, res) => {
-  const address = '0x9f45deB282DA4AA19E4965E3483DCA19D93CaE01'
-  const project = '01'
+api.get('/:address/nft/:id/files', authMiddleware, async (req, res) => {
+  const { address, id } = req.params
+  const { account } = res.locals
 
-  const dir = await fs.promises.opendir(`./storage/${address}/${project}/source/`);
+  const dir = await fs.promises.opendir(`./storage/nfts/${account}/${id}/source/`);
 
-  const fileTree = []
+  const files = []
   let current
 
   while (current = dir.readSync()) {
-    fileTree.push({
+    files.push({
       name: current.name,
       isDir: current.isDirectory(),
       isFile: current.isFile(),
@@ -167,9 +164,9 @@ api.get('/test', async (req, res) => {
   }
   dir.close()
 
-  res.send({
-    address, tree: fileTree
-  })
+  console.log(files)
+
+  res.send({ files })
 })
 
 //TODO: add auth middlware (Make sure preview page keep working)
