@@ -1,7 +1,82 @@
 .Minter {
   display: grid;
-  grid-template-columns: 50% 50%;
-  grid-template-rows: 50% 50%;
-  padding: 25px;
+  grid-template-rows: 1fr auto;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas: "header header"
+                       "metadata media"
+                       "actions actions";
+  padding: 0 25px;
   gap: 25px;
+}
+
+.Minter .Header {
+  grid-area: header;
+  background: transparent;
+  margin: -15px 0;
+}
+
+.Minter .Metadata {
+  grid-area: metadata;
+}
+
+.Minter .Media {
+  grid-area: media;
+}
+
+.Minter .Actions {
+  grid-area: actions;
+  display: flex;
+  flex-direction: column;
+  /* margin: auto; */
+  margin-top: -15px;
+  padding-bottom: 15px;
+}
+
+.Minter .Actions > *{
+  display: inline-block;
+}
+
+.Minter label {
+  display: block;
+  font-size: 22px;
+  margin-bottom: 25px;
+}
+
+.Minter label span {
+  display: block;
+  margin: 10px 0;
+}
+
+.Minter label input,
+.Minter label textarea {
+  width: 95%;
+  min-height: 30px;
+  border: 3px solid white;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.Minter label textarea {
+  min-height: 175px;
+}
+
+.Minter label input:focus-visible,
+.Minter label textarea:focus-visible {
+  border-color: var(--secondary-account-color);
+  outline: none;
+  outline-offset: none;
+}
+
+.Minter button {
+  color: #ffffff;
+  background-color: transparent;
+  border: 1px solid var(--primary-account-color);
+  border-radius: 15px;
+  padding: 20px;
+  cursor: pointer;
+}
+
+.Minter button:hover {
+  border-color: var(--secondary-account-color);
+  color: #aaaaaa;
 }

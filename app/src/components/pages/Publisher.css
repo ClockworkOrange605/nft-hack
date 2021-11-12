@@ -1,0 +1,57 @@
+.Publisher {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas: "header header"
+                        "preview metadata"
+                        "actions actions";
+  padding: 0 25px;
+  gap: 25px;
+}
+
+.Publisher .Header {
+  grid-area: header;
+  background: transparent;
+}
+
+.Publisher .Preview {
+  grid-area: preview;
+}
+
+.Publisher .Metadata {
+  grid-area: metadata;
+  background: #1e1e1e;
+  max-width: 400px;
+  overflow-x: auto;
+  padding: 25px;
+}
+
+.Publisher .Metadata code {
+  max-width: 200px;
+}
+
+.Publisher .Actions {
+  grid-area: actions;
+  display: flex;
+  flex-direction: column;
+  /* margin-top: -15px; */
+  padding: 15px 0;
+}
+
+.Publisher .Actions > *{
+  display: inline-block;
+}
+
+.Publisher button {
+  color: #ffffff;
+  background-color: transparent;
+  border: 1px solid var(--primary-account-color);
+  border-radius: 15px;
+  padding: 20px;
+  cursor: pointer;
+}
+
+.Publisher button:hover {
+  border-color: var(--secondary-account-color);
+  color: #aaaaaa;
+}

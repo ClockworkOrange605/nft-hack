@@ -29,6 +29,11 @@ function Minter() {
     }
   }, [account, id])
 
+  function selectImage(event) {
+    console.log(event)
+    event.preventDefault()
+  }
+
   function check(data) {
     return Boolean(data?.name && data?.description)
   }
@@ -68,9 +73,13 @@ function Minter() {
 
       {data && (
         <div className="Minter">
-          <div>
-            <label>
-              <span>Name</span><br />
+          {/* <div className="Header">
+            <h1>Token Metadata</h1>
+          </div> */}
+
+          <div className="Metadata">
+            <label for="name">
+              <span>Name</span>
               <input
                 name="name"
                 type="text"
@@ -78,37 +87,46 @@ function Minter() {
                 defaultValue={data?.metadata?.name}
               />
             </label>
-            <br /><br />
-            <label>
-              <span>Description</span><br />
+
+            <label for="description">
+              <span>Description</span>
               <textarea
                 name="description"
                 placeholder="Token Description"
                 defaultValue={data?.metadata?.description}
               />
             </label>
-            <br /><br />
+
             <label>
               <span>Attributes</span>
+              <p>Library: {data?.template?.type}</p>
+              <p>Version: {data?.template?.version}</p>
+              <p>Size: ??? Kb</p>
             </label>
-            <br /><br />
           </div>
 
-          <div>
+          <div className="Media">
             <label>
-              <span>Image</span><br />
-              <img width="450" src="http://localhost:4000/temp/example5.png" />
+              <span>
+                Image
+                {/* <span style={{ float: 'right' }} onClick={selectImage}>Select</span> */}
+              </span>
+              <img width="450" src="http://localhost:4000/temp/618a387de837537de8437cd9/preview_1.png" />
+              <img width="450" src="http://localhost:4000/temp/618a387de837537de8437cd9/preview_2.png" />
+              <img width="450" src="http://localhost:4000/temp/618a387de837537de8437cd9/preview_3.png" />
+              <img width="450" src="http://localhost:4000/temp/618a387de837537de8437cd9/preview_4.png" />
+              <img width="450" src="http://localhost:4000/temp/618a387de837537de8437cd9/preview_5.png" />
+              <input type="hidden" defaultValue="http://localhost:4000/temp/618a387de837537de8437cd9/preview_5.png" />
             </label>
-            <br /><br />
+
             <label>
-              <span>Animation</span><br />
-              <video width="450" muted autoPlay loop controls controlsList="nodownload" src="http://localhost:4000/temp/demo.mp4" />
+              <span>Animation</span>
+              <video width="450" muted /*autoPlay*/ /*loop*/ controls controlsList="nodownload" src="http://localhost:4000/temp/618a387de837537de8437cd9/demo.mp4" />
             </label>
-            <br /><br />
           </div>
 
-          <div>
-            <input type="submit" value="Next Step" />
+          <div className="Actions">
+            <button type="submit">Save</button>
           </div>
         </div>
       )}
