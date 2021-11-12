@@ -48,24 +48,8 @@ function Templates() {
         <div className="Logo"></div>
         <p>Coming Soon ...</p>
       </div>
-      <div className="Template disabled">
-        <div className="Logo"></div>
-        <p>Coming soon ...</p>
-      </div>
-      <div className="Template disabled">
-        <div className="Logo"></div>
-        <p>Coming soon ...</p>
-      </div>
-      <div className="Template disabled">
-        <div className="Logo"></div>
-        <p>Coming soon ...</p>
-      </div>
-      <div className="Template disabled">
-        <div className="Logo"></div>
-        <p>Coming soon ...</p>
-      </div>
 
-      <div className="Template disabled">
+      {/* <div className="Template disabled">
         <div className="Logo"></div>
         <p>Coming soon ...</p>
       </div>
@@ -80,13 +64,9 @@ function Templates() {
       <div className="Template disabled">
         <div className="Logo"></div>
         <p>Coming soon ...</p>
-      </div>
-      <div className="Template disabled">
-        <div className="Logo"></div>
-        <p>Coming soon ...</p>
-      </div>
+      </div> */}
 
-      <div className="Template disabled">
+      {/* <div className="Template disabled">
         <div className="Logo"></div>
         <p>Coming soon ...</p>
       </div>
@@ -105,7 +85,28 @@ function Templates() {
       <div className="Template disabled">
         <div className="Logo"></div>
         <p>Coming soon ...</p>
+      </div> */}
+
+      {/* <div className="Template disabled">
+        <div className="Logo"></div>
+        <p>Coming soon ...</p>
       </div>
+      <div className="Template disabled">
+        <div className="Logo"></div>
+        <p>Coming soon ...</p>
+      </div>
+      <div className="Template disabled">
+        <div className="Logo"></div>
+        <p>Coming soon ...</p>
+      </div>
+      <div className="Template disabled">
+        <div className="Logo"></div>
+        <p>Coming soon ...</p>
+      </div>
+      <div className="Template disabled">
+        <div className="Logo"></div>
+        <p>Coming soon ...</p>
+      </div> */}
     </div>
   )
 }

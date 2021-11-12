@@ -1,11 +1,9 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useMetaMask } from 'metamask-react'
 
 import AuthProvider from './providers/AuthProvider'
 
-import Main from './components/layout/Main'
-import Header from './components/layout/Header'
-import Footer from './components/layout/Footer'
+import { Header, Main, Footer } from './components/Layout'
 
 import './App.css'
 

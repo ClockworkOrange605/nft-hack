@@ -1,9 +1,5 @@
 .Main {
   position: relative;
-  /* display: flex; */
-  /* flex-direction: row; */
-  /* justify-content: space-around; */
-  /* align-items: flex-start; */
   background-color: rgb(25, 25, 25);
   padding: 5px;
   overflow-y: scroll;

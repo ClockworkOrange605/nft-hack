@@ -1,17 +1,18 @@
 import { useEffect } from "react"
 import { Switch, Route } from "react-router-dom"
 
-import { useAuth } from '../../providers/AuthProvider'
+import { useAuth } from '../../../providers/AuthProvider'
 import { useMetaMask } from 'metamask-react'
 
-import Home from "../pages/Home"
-import Collection from "../pages/Collection"
+import Home from "../../pages/Home"
+import Collection from "../../pages/Collection"
 
-import Templates from '../pages/Templates'
-import Drafts from '../pages/Drafts'
-import Editor from '../pages/Editor'
-import Minter from "../pages/Minter"
-import Publisher from "../pages/Publisher"
+import Templates from '../../pages/Templates'
+import Editor from '../../pages/Editor'
+import Minter from "../../pages/Minter"
+import Publisher from "../../pages/Publisher"
+
+import Drafts from '../../pages/Drafts'
 
 import './Main.css'
 

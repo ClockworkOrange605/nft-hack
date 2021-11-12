@@ -6,13 +6,30 @@
   padding: 25px;
 }
 
+.Drafts h1 {
+  font-size: 42px;
+}
+
 .Drafts .Draft {
-  max-height: 200px;
+  height: 200px;
   background: rgb(40, 40, 40);
   border: 1px solid var(--primary-account-color);
   border-radius: 15px;
   text-align: center;
-  cursor:pointer
+  cursor:pointer;
+}
+
+.Drafts .Draft img{
+  max-height: 150px;
+  padding-top: 10px;
+}
+
+.Drafts .Draft p{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 120px;
+  margin: auto;
 }
 
 .Drafts .Draft:hover {

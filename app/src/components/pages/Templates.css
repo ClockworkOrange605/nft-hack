@@ -8,12 +8,10 @@
 
 .Templates h1 {
   font-size: 42px;
-  /* margin: auto; */
-  /* text-align: center; */
 }
 
 .Templates .Template {
-  max-height: 200px;
+  height: 200px;
   background: rgb(40, 40, 40);
   border: 1px solid var(--primary-account-color);
   border-radius: 15px;

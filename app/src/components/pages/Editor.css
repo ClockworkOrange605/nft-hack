@@ -21,6 +21,37 @@
   grid-area: workspace;
 }
 
+.IDE .workspace .fileTree p{
+  width: 75px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: inline-block;
+  cursor: pointer;
+  padding: 0 10px;
+  margin: 0;
+  border: 1px solid #333;
+  background-color: #333;
+  border-bottom: none;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.IDE .workspace .fileTree p:hover{
+  border-color: #444;
+  background-color: #444;
+  color: #aaaaaa;
+}
+.IDE .workspace .fileTree p.selected{
+  border-color: #555;
+  background-color: #555;
+  color: #aaaaaa;
+}
+
+.IDE .workspace .EditorInstance {
+  min-width: 100px;
+  height: 400px;
+}
+
 .IDE .Preview {
   grid-area: preview;
   aspect-ratio: 16 / 9;
@@ -51,16 +82,4 @@
 }
 .IDE .Preview .Console:hover::-webkit-scrollbar-thumb {
   background-color: rgba(121, 121, 121, .4);
-}
-
-.IDE .EditorInstance {
-  min-width: 100px;
-  min-height: 300px;
-  /* height: calc(100vh - 250px) */
-  height: 450px;
-}
-
-.react-tabs__tab {
-  background: grey;
-  border-radius: 5px 5px 0 0;
 }

@@ -69,7 +69,7 @@ function IDE() {
         <button onClick={() => saveMethod()} style={{ float: 'right' }}>Save</button>
       </div>
       <div className="workspace">
-        <div>
+        <div className="fileTree">
           {files && (
             files.map(file => (
               <p onClick={() => setFile(file.name)}>{file.name}</p>
