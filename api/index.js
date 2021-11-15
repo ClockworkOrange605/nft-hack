@@ -5,6 +5,8 @@ import fs from 'fs'
 import path from 'path'
 import glob from 'glob'
 
+import axios from 'axios'
+
 import jwt from 'jsonwebtoken'
 import ethSigUtils from 'eth-sig-util'
 
@@ -21,6 +23,14 @@ const config = {
   },
   rpc: {
     uri: process.env.ETHER_RPC
+  },
+  ipfs: {
+    infura_uri: 'https://ipfs.infura.io:5001',
+    infura_id: '20wh4i1jtreoXCC2Q1JCg8jw591',
+    infura_secret: 'd3cfb90fc47dc80cca447c6457ea64b6',
+
+    nft_storage_uri: 'https://api.nft.storage',
+    nft_storage_key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDRBQjUwMzljMjhBQ2U2ZEE5MTMyYkZiMTkwNGY1ZmU2RTM2N2Q1MDAiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTYzMzQ1NDU1MjYwNCwibmFtZSI6ImRldiJ9.LUeNIf4avo4cjdiJ4_GBOey5C4JvjIaaOqoA07Hs2Qw',
   }
 }
 
@@ -129,21 +139,50 @@ api.get('/:address/nft/:id/', authMiddleware, async (req, res) => {
 
 api.post('/:address/nft/:id/update', authMiddleware, async (req, res) => {
   const { address, id } = req.params
-  const { metadata } = req.body
+  const { metadata, image, animation } = req.body
   const { account } = res.locals
+
+  const imageFile = fs.readFileSync(image.replace('http://localhost:4000', './storage'))
+  const animationFile = fs.readFileSync(animation.replace('http://localhost:4000', './storage'))
+
+  const uploadResult = await Promise.all([
+    axios.post(`${config.ipfs.nft_storage_uri}/upload`, imageFile, {
+      headers: { "Authorization": `Bearer ${config.ipfs.nft_storage_key}` }
+    }),
+    axios.post(`${config.ipfs.nft_storage_uri}/upload`, animationFile, {
+      headers: { "Authorization": `Bearer ${config.ipfs.nft_storage_key}` }
+    }),
+  ])
+
+  const [image_url, animation_url] =
+    uploadResult.map(res => `https://ipfs.io/ipfs/${res.data.value.cid}`)
+
+  const metadataFile = Buffer.from(
+    JSON.stringify({ ...metadata, image: image_url, animation_url }, null, '\t')
+  )
+
+  const metadataUpload = await axios.post(`${config.ipfs.nft_storage_uri}/upload`, metadataFile, {
+    headers: { "Authorization": `Bearer ${config.ipfs.nft_storage_key}` }
+  })
+
+  const metadataUrl = `https://ipfs.io/ipfs/${metadataUpload.data.value.cid}`
 
   //TODO: refactor DB connection
   await client.connect()
   const db = client.db(config.db.name)
   const collection = db.collection('nfts')
 
-  const nft = await collection.updateOne(
+  const result = await collection.updateOne(
     { _id: ObjectId(id), address: account },
-    { $set: { metadata: metadata } }
+    {
+      $set: {
+        metadata_url: metadataUrl,
+        metadata: { ...metadata, image: image_url, animation_url }
+      }
+    }
   )
-  console.log(nft)
 
-  res.send(nft)
+  res.send(result)
 })
 
 /* Editor */
@@ -164,8 +203,6 @@ api.get('/:address/nft/:id/files', authMiddleware, async (req, res) => {
     })
   }
   dir.close()
-
-  console.log(files)
 
   res.send({ files })
 })

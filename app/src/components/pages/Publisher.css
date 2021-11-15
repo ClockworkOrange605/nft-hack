@@ -1,10 +1,11 @@
 .Publisher {
   display: grid;
-  grid-template-rows: 1fr auto;
-  grid-template-columns: 1fr 1fr;
+  /* grid-template-rows: 1fr auto auto auto; */
+  /* grid-template-columns: 1fr 1fr; */
   grid-template-areas: "header header"
-                        "preview metadata"
-                        "actions actions";
+                       "metadata metadata"
+                       "image animation"
+                       "actions actions";
   padding: 0 25px;
   gap: 25px;
 }
@@ -12,34 +13,68 @@
 .Publisher .Header {
   grid-area: header;
   background: transparent;
-}
-
-.Publisher .Preview {
-  grid-area: preview;
+  margin-bottom: -40px;
 }
 
 .Publisher .Metadata {
   grid-area: metadata;
-  background: #1e1e1e;
-  max-width: 400px;
-  overflow-x: auto;
-  padding: 25px;
 }
 
-.Publisher .Metadata code {
-  max-width: 200px;
+.Publisher .Image {
+  grid-area: image;
+}
+
+.Publisher .Animation {
+  grid-area: animation;
 }
 
 .Publisher .Actions {
   grid-area: actions;
   display: flex;
   flex-direction: column;
-  /* margin-top: -15px; */
   padding: 15px 0;
 }
 
-.Publisher .Actions > *{
-  display: inline-block;
+.Publisher h2{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.Publisher .Metadata h2 {
+  max-width: 800px;
+}
+
+.Publisher .Image h2,
+.Publisher .Animation h2 {
+  max-width: 400px;
+}
+
+.Publisher h2 a{
+  font-size: 14px;
+}
+
+.Publisher .Metadata code {
+  display: block;
+  padding: 20px;
+  background: #1e1e1e;
+  max-width: 900px;
+  overflow-x: auto;
+}
+
+.Publisher .Metadata code::-webkit-scrollbar {
+  height: 10px;
+}
+
+.Publisher .Metadata code::-webkit-scrollbar-track {
+  background-color: #111111;
+  border-radius: 100px;
+}
+
+.Publisher .Metadata code::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 100px;
+  background-color: #aaaaaa;
 }
 
 .Publisher button {

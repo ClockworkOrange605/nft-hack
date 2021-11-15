@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import { Fragment } from 'react'
 
 import { useParams } from 'react-router'
 // import { useHistory } from "react-router-dom"
@@ -12,17 +11,6 @@ import * as monaco from 'monaco-editor'
 
 import './Publisher.css'
 
-const metadata = {
-  "description": "Friendly OpenSea Creature that enjoys long swims in the ocean.",
-  "external_url": "https://openseacreatures.io/3",
-  "image": "https://storage.googleapis.com/opensea-prod.appspot.com/puffs/3.png",
-  "name": "Dave Starbelly",
-  // image:
-  // animation_url:
-}
-
-// const code = Fragment(metadata)
-
 function Publisher() {
   const codeRef = useRef()
 
@@ -32,9 +20,8 @@ function Publisher() {
   const { id } = useParams()
   // const history = useHistory()
 
-
-
   const [data, setData] = useState()
+  const [metadata, setMetadata] = useState()
   const [code, setCode] = useState()
   const [loading, setLoading] = useState(true)
 
@@ -46,12 +33,17 @@ function Publisher() {
         }
       }).then(async (res) => {
         const data = await res.json()
-        const code = await monaco.editor.colorize(JSON.stringify(data.metadata, null, '\t'), 'json')
-
         setData(data)
-        setCode(code)
 
-        setLoading(false)
+        fetch(data.metadata_url)
+          .then(async (res) => {
+            const metadata = await res.json()
+            setMetadata(metadata)
+            const code = await monaco.editor.colorize(JSON.stringify(metadata, null, '\t'), 'json')
+
+            setCode(code)
+            setLoading(false)
+          })
       })
     }
   }, [account, id])
@@ -91,15 +83,28 @@ function Publisher() {
       {loading && <p>Loading . . . </p>}
 
       <div className="Header">
-        {/* <h1></h1> */}
-      </div>
-
-      <div className="Preview">
-        <img width="450" src="http://localhost:4000/temp/618a387de837537de8437cd9/preview_5.png" />
+        {/* <h1>Review Metadata and Publish</h1> */}
       </div>
 
       <div className="Metadata">
+        <h2>
+          Metadata <a href={data?.metadata_url} target="_blank" rel="noreferer">{data?.metadata_url}</a>
+        </h2>
         <code ref={codeRef} />
+      </div>
+
+      <div className="Image">
+        <h2>
+          Image <a href={metadata?.image} target="_blank" rel="noreferer">{metadata?.image}</a>
+        </h2>
+        <img width="450" src={metadata?.image} />
+      </div>
+
+      <div className="Animation">
+        <h2>
+          Animation <a href={metadata?.animation_url} target="_blank" rel="noreferer">{metadata?.animation_url}</a>
+        </h2>
+        <video width="450" muted autoPlay /*loop*/ controls controlsList="nodownload" src={metadata?.animation_url} />
       </div>
 
       <div className="Actions">

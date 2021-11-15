@@ -48,13 +48,22 @@ function Minter() {
     }
 
     if (check(data)) {
+      console.log(
+        form.get('image'),
+        form.get('animation')
+      )
+
       fetch(`/${account}/nft/${id}/update/`, {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',
           'x-auth-token': sessionStorage.getItem(account)
         },
-        body: JSON.stringify({ metadata: data, image: "", animation_url: "" })
+        body: JSON.stringify({
+          metadata: data,
+          image: form.get('image'),
+          animation: form.get('animation')
+        })
       }).then(async (res) => {
         const data = await res.json()
         console.log(data)
@@ -78,7 +87,7 @@ function Minter() {
           </div> */}
 
           <div className="Metadata">
-            <label for="name">
+            <label htmlFor="name">
               <span>Name</span>
               <input
                 name="name"
@@ -88,7 +97,7 @@ function Minter() {
               />
             </label>
 
-            <label for="description">
+            <label htmlFor="description">
               <span>Description</span>
               <textarea
                 name="description"
@@ -111,17 +120,18 @@ function Minter() {
                 Image
                 {/* <span style={{ float: 'right' }} onClick={selectImage}>Select</span> */}
               </span>
-              <img width="450" src="http://localhost:4000/temp/618a387de837537de8437cd9/preview_1.png" />
-              <img width="450" src="http://localhost:4000/temp/618a387de837537de8437cd9/preview_2.png" />
-              <img width="450" src="http://localhost:4000/temp/618a387de837537de8437cd9/preview_3.png" />
-              <img width="450" src="http://localhost:4000/temp/618a387de837537de8437cd9/preview_4.png" />
-              <img width="450" src="http://localhost:4000/temp/618a387de837537de8437cd9/preview_5.png" />
-              <input type="hidden" defaultValue="http://localhost:4000/temp/618a387de837537de8437cd9/preview_5.png" />
+              <img width="450" alt="" src="http://localhost:4000/temp/618a387de837537de8437cd9/preview_1.png" />
+              {/* <img width="450" alt="" src="http://localhost:4000/temp/618a387de837537de8437cd9/preview_2.png" />
+              <img width="450" alt="" src="http://localhost:4000/temp/618a387de837537de8437cd9/preview_3.png" />
+              <img width="450" alt="" src="http://localhost:4000/temp/618a387de837537de8437cd9/preview_4.png" />
+              <img width="450" alt="" src="http://localhost:4000/temp/618a387de837537de8437cd9/preview_5.png" /> */}
+              <input name="image" type="hidden" defaultValue="http://localhost:4000/temp/618a387de837537de8437cd9/preview_5.png" />
             </label>
 
             <label>
               <span>Animation</span>
               <video width="450" muted /*autoPlay*/ /*loop*/ controls controlsList="nodownload" src="http://localhost:4000/temp/618a387de837537de8437cd9/demo.mp4" />
+              <input name="animation" type="hidden" defaultValue="http://localhost:4000/temp/618a387de837537de8437cd9/demo.mp4" />
             </label>
           </div>
 
