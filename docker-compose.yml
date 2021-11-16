@@ -3,7 +3,8 @@ version: "3.9"
 services:
     rpc:
         image: node:12
-        command: bash -c "npm install && npx truffle develop"
+        # command: bash -c "npm install && npx truffle develop"
+        command: bash -c "npx truffle develop"
         working_dir: /app
         volumes:
             - ./contracts:/app
@@ -12,7 +13,8 @@ services:
 
     api:
         image: node:12
-        command: bash -c "npm install && npm run dev"
+        # command: bash -c "npm install && npm run dev"
+        command: bash -c "npm run dev"
         working_dir: /app
         volumes:
             - ./api:/app
@@ -22,10 +24,12 @@ services:
         environment:
             ETHER_RPC: http://rpc:9545
             MONGO_URI: mongodb://mongo:27017
+            NFT_STORAGE_KEY: ${NFT_STORAGE_KEY}
 
     app:
         image: node:12
-        command: bash -c "npm install && npm start"
+        # command: bash -c "npm install && npm start"
+        command: bash -c "npm start"
         working_dir: /app
         volumes:
             - ./app:/app

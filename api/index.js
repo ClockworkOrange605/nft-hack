@@ -18,21 +18,19 @@ const config = {
     secret: 'shhhhh'
   },
   db: {
-    uri: process.env.MONGO_URI,
+    uri: process.env.MONGO_URI || 'http://localhost:9545',
     name: 'crcode'
   },
   rpc: {
-    uri: process.env.ETHER_RPC
+    uri: process.env.ETHER_RPC || 'mongodb://localhost:27017'
   },
   ipfs: {
-    infura_uri: 'https://ipfs.infura.io:5001',
-    infura_id: '20wh4i1jtreoXCC2Q1JCg8jw591',
-    infura_secret: 'd3cfb90fc47dc80cca447c6457ea64b6',
-
     nft_storage_uri: 'https://api.nft.storage',
-    nft_storage_key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDRBQjUwMzljMjhBQ2U2ZEE5MTMyYkZiMTkwNGY1ZmU2RTM2N2Q1MDAiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTYzMzQ1NDU1MjYwNCwibmFtZSI6ImRldiJ9.LUeNIf4avo4cjdiJ4_GBOey5C4JvjIaaOqoA07Hs2Qw',
+    nft_storage_key: process.env.NFT_STORAGE_KEY || 'SET_UP_KEY',
   }
 }
+
+console.log(config.ipfs.nft_storage_key)
 
 const api = express()
 api.use(express.json())
