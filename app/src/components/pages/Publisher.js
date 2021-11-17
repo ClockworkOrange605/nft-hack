@@ -14,7 +14,7 @@ import './Publisher.css'
 function Publisher() {
   const codeRef = useRef()
 
-  const { account: address, ethereum } = useMetaMask()
+  const { account: address, ethereum, chainId } = useMetaMask()
 
   const { account } = useAuth()
   const { id } = useParams()
@@ -55,21 +55,36 @@ function Publisher() {
   }, [code, codeRef])
 
   async function publish() {
+    //TODO: add env variables
+    const chain = '0x539'
+    const contract = '0x4248971983B1714e6FD93939e703398ff664c3a0'
+
+    //TODO: make account check
+    if (address !== account) {
+      return alert('wrong metamask account selected')
+    }
+
+    //TODO: make notification for wrong chain
+    if (chainId !== chain) {
+      return alert('wrong chain selected')
+    }
+
     // https://docs.metamask.io/guide/sending-transactions.html#example
     const transactionParameters = {
-      nonce: '0x00', // ignored by MetaMask
-      gasPrice: '0x09184e72a000', // customizable by user during MetaMask confirmation.
-      gas: '0x2710', // customizable by user during MetaMask confirmation.
-      to: '0x0000000000000000000000000000000000000000', // Required except during contract publications.
-      from: ethereum.selectedAddress, // must match user's active address.
-      value: '0x29a2241af62c0000', // Only required to send ether to the recipient from the initiating external account.
-      data:
-        '0x7f7465737432000000000000000000000000000000000000000000000000000000600057', // Optional, but used for defining smart contract creation and interaction.
-      chainId: '0x3', // Used to prevent transaction reuse across blockchains. Auto-filled by MetaMask.
-    };
+      chainId: chain,
 
-    // txHash is a hex string
-    // As with any RPC call, it may throw an error
+      from: account,
+      to: contract,
+      // to: "0xd426db87ac25281e25abdbab3de547b344756a8c",
+
+      // value: '0x16345785d8a0000',
+      gasPrice: '0x4a817c800',
+      // gas: '0x30f08',
+      gas: '0x71668',
+
+      data: '0xd0def5210000000000000000000000003ed7afcc7ea8b7a00c5fbc75faa888009d1c26530000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000005068747470733a2f2f697066732e696f2f697066732f6261666b7265696463786f646d69336f667536746b6c6f78727063327770786d337a6e79783367696e6b72366a673573616c646c347172356b6a7500000000000000000000000000000000',
+    }
+
     const txHash = await ethereum.request({
       method: 'eth_sendTransaction',
       params: [transactionParameters],

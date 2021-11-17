@@ -30,8 +30,6 @@ const config = {
   }
 }
 
-console.log(config.ipfs.nft_storage_key)
-
 const api = express()
 api.use(express.json())
 api.use(express.text({ type: 'text/*' }))
