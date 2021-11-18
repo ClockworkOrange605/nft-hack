@@ -2,13 +2,21 @@ import { useState, useEffect } from 'react'
 
 import Loader from '../common/Loader'
 
-import './Collection.css'
+import { useAuth } from '../../providers/AuthProvider'
+
+import './CollectionPrivate.css'
 
 function Collection() {
+  const { account } = useAuth()
+
   const [tokens, setTokens] = useState()
 
   useEffect(() => {
-    fetch('/collection/list/')
+    fetch(`/${account}/collection/list/`, {
+      headers: {
+        'x-auth-token': sessionStorage.getItem(account)
+      }
+    })
       .then(res => {
         res.json()
           .then(data => {
@@ -46,19 +54,6 @@ function CollectionItem({ token }) {
         <img src={metadata?.image} />
       </div>
       <p>{metadata?.name}</p>
-      <p>{metadata?.description}</p>
-      <p>
-        <span style={{ color: '#888888' }}>
-          0x
-          <span style={{ 'color': `#${token.owner.slice(2, 8)}` }}>
-            {token.owner.slice(2, 8)}
-          </span>
-          . . .
-          <span style={{ 'color': `#${token.owner.slice(-6)}` }}>
-            {token.owner.slice(-6)}
-          </span>
-        </span>
-      </p>
     </div>
   )
 }

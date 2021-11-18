@@ -34,7 +34,10 @@ console.timeEnd('abi')
 const address = "0x4248971983B1714e6FD93939e703398ff664c3a0";
 const contract = new web3.eth.Contract(abi, address);
 
-// console.log(contract.methods)
+console.log(
+  contract.methods,
+  // await contract.methods.tokenByIndex(0).call()
+);
 // contract.methods.name().call((err, res) => {
 //   console.log(err, res)
 // });
@@ -67,7 +70,7 @@ const contract = new web3.eth.Contract(abi, address);
 
   console.log(
     await contract.methods.totalSupply().call(),
-    await contract.methods.totalSupply().call(),
+    await contract.methods.tokenByIndex(0).call(),
   )
 
   console.log(

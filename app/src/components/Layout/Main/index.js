@@ -13,6 +13,7 @@ import Minter from "../../pages/Minter"
 import Publisher from "../../pages/Publisher"
 
 import Drafts from '../../pages/Drafts'
+import CollectionPrivate from "../../pages/CollectionPrivate"
 
 import HowItWorks from "../../pages/static/HowItWorks"
 
@@ -50,9 +51,9 @@ const Main = () => {
           <Drafts />
         </PrivateRoute>
 
-        <Route path="/account/tokens">
-          <p>Tokens goes here ...</p>
-        </Route>
+        <PrivateRoute path="/account/tokens">
+          <CollectionPrivate />
+        </PrivateRoute>
 
         <Route path="*">
           <p>Not Found - 404 Page</p>
