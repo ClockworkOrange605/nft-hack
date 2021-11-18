@@ -14,6 +14,8 @@ import Publisher from "../../pages/Publisher"
 
 import Drafts from '../../pages/Drafts'
 
+import HowItWorks from "../../pages/static/HowItWorks"
+
 import './Main.css'
 
 const Main = () => {
@@ -23,6 +25,11 @@ const Main = () => {
         <Route exact path="/">
           <Home />
         </Route>
+
+        <Route path="/how-it-works">
+          <HowItWorks />
+        </Route>
+
         <Route path="/collection">
           <Collection />
         </Route>

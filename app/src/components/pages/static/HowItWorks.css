@@ -1,0 +1,98 @@
+.HowTo {
+  padding: 25px;
+}
+.HowTo .Links {
+  display: flex;
+  justify-content: stretch;
+}
+
+.HowTo .Links p {
+  font-size: 30px;
+  border: 1px solid green;
+  border-bottom: none;
+  border-radius: 25px 25px 0 0;
+  border-bottom-left-radius: none;
+  border-bottom-right-radius: none;
+  width: 204px;
+  padding: 25px 130px;
+  margin-bottom: 0px;
+  cursor: pointer;
+}
+
+.HowTo .Links p#toCollectors {
+  border-color: var(--primary-account-color);
+}
+/* .HowTo .Links p#toCollectors:hover {
+  border-color: var(--secondary-account-color);
+} */
+
+.HowTo .Links p#toCreators {
+  border-color: var(--secondary-account-color);
+}
+/* .HowTo .Links p#toCreators:hover {
+  border-color: var(--primary-account-color);
+} */
+
+.HowTo .Links p#toCollectors {
+  border-color: var(--primary-account-color);
+}
+.HowTo .Links p#toCreators {
+  /* border-color: var(--secondary-account-color); */
+  border: none;
+  border-bottom: 1px solid;
+  border-color: var(--primary-account-color);
+  /* border-bottom-left-radius: 20px; */
+}
+
+.HowTo .Content {
+  border: 1px solid var(--primary-account-color);
+  border-top: none;
+  padding: 20px;
+}
+
+.HowTo .Content .Block {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  padding-bottom: 50px;
+}
+.HowTo .Content .Block:nth-child(2n) {
+  flex-direction: row-reverse;
+}
+
+.HowTo .Content .Block img {
+  max-width: 550px;
+}
+
+.HowTo .Content .Block p {
+  /* background-color: #888; */
+  border-radius: 35px;
+  padding: 25px;
+  font-size: 22px;
+  line-height: 24pt;
+  text-align: center;
+  text-align-last: center;
+}
+
+.HowTo .Content .Block p b,
+.HowTo .Content .Block p i {
+  font-style: normal;
+  font-weight: bold;
+  border-radius: 5px;
+  padding: 0 2px;
+  cursor: pointer;
+}
+
+/* .HowTo .Content .Block p b {
+  border: 1px solid var(--primary-account-color);
+}
+.HowTo .Content .Block p b:hover {
+  border: 1px solid var(--secondary-account-color);
+}
+
+.HowTo .Content .Block p i {
+  border: 1px solid var(--secondary-account-color);
+}
+.HowTo .Content .Block p i:hover {
+  border: 1px solid var(--primary-account-color);
+} */
