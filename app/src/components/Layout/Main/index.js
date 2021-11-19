@@ -6,6 +6,7 @@ import { useMetaMask } from 'metamask-react'
 
 import Home from "../../pages/Home"
 import Collection from "../../pages/Collection"
+import Token from "../../pages/CollectionToken"
 
 import Templates from '../../pages/Templates'
 import Editor from '../../pages/Editor'
@@ -31,6 +32,9 @@ const Main = () => {
           <HowItWorks />
         </Route>
 
+        <Route path="/collection/:id">
+          <Token />
+        </Route>
         <Route path="/collection">
           <Collection />
         </Route>

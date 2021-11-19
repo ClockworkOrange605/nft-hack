@@ -685,6 +685,29 @@ api.get('/collection/list', async (req, res) => {
   })
 })
 
+api.get('/collection/:id/', async (req, res) => {
+  const { id } = req.params
+
+  const web3 = new Web3(config.rpc.uri)
+  const contract = new web3.eth.Contract(abi, config.rpc.contract)
+
+  const uri = await contract.methods.tokenURI(id).call()
+  const owner = await contract.methods.ownerOf(id).call()
+
+  //TODO: check contract indexed values
+  // https://ethereum.stackexchange.com/a/74438/28459
+  const events = await contract.getPastEvents("allEvents", {
+    fromBlock: "earliest", toBlock: "latest",
+    filter: { "tokenId": id.toString(), "2": id.toString() },
+  })
+
+  res.send({
+    debug: true,
+    token: { id, owner, uri },
+    events: events.filter(event => event.returnValues.tokenId == id)
+  })
+})
+
 api.get('/:address/collection/list', authMiddleware, async (req, res) => {
   const { address } = req.params
   const { account } = res.locals

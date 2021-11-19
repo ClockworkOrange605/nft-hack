@@ -1,0 +1,28 @@
+.Token {
+  display: grid;
+  grid-template-areas: "info details";
+  grid-template-columns: 300px 620px;
+  max-width: 1000px;
+  overflow-x: hidden;
+  gap: 30px;
+  padding: 25px;
+}
+.Token .Info {
+  grid-area: info;
+  display: flex;
+  flex-direction: column;
+  border-radius: 50px;
+  border: 1px solid var(--primary-account-color);
+  padding: 30px;
+  max-width: 350px;
+  text-overflow: ellipsis;
+}
+.Token .Details {
+  grid-area: details;
+  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 50px;
+  border: 1px solid var(--secondary-account-color);
+  padding: 30px;
+}

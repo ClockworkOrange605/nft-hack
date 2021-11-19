@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 
 import Loader from '../common/Loader'
 
@@ -41,25 +42,27 @@ function CollectionItem({ token }) {
   }, [token])
 
   return (
-    <div className="Item">
-      <div className="Image">
-        <img src={metadata?.image} />
+    <Link to={`/collection/${token.id}`}>
+      <div className="Item">
+        <div className="Image">
+          <img src={metadata?.image} />
+        </div>
+        <p>{metadata?.name}</p>
+        <p>{metadata?.description}</p>
+        <p>
+          <span style={{ color: '#888888' }}>
+            0x
+            <span style={{ 'color': `#${token.owner.slice(2, 8)}` }}>
+              {token.owner.slice(2, 8)}
+            </span>
+            . . .
+            <span style={{ 'color': `#${token.owner.slice(-6)}` }}>
+              {token.owner.slice(-6)}
+            </span>
+          </span>
+        </p>
       </div>
-      <p>{metadata?.name}</p>
-      <p>{metadata?.description}</p>
-      <p>
-        <span style={{ color: '#888888' }}>
-          0x
-          <span style={{ 'color': `#${token.owner.slice(2, 8)}` }}>
-            {token.owner.slice(2, 8)}
-          </span>
-          . . .
-          <span style={{ 'color': `#${token.owner.slice(-6)}` }}>
-            {token.owner.slice(-6)}
-          </span>
-        </span>
-      </p>
-    </div>
+    </Link>
   )
 }
 
