@@ -685,6 +685,29 @@ api.get('/collection/list', async (req, res) => {
   })
 })
 
+api.get('/collection/latests', async (req, res) => {
+  const web3 = new Web3(config.rpc.uri)
+  const contract = new web3.eth.Contract(abi, config.rpc.contract)
+
+  const tokens = []
+  const total = await contract.methods.totalSupply().call()
+  // console.log(total, typeof total)
+  for (let index = total - 1; index > total - 4; index--) {
+    const id = await contract.methods.tokenByIndex(index).call()
+    const uri = await contract.methods.tokenURI(id).call()
+    const owner = await contract.methods.ownerOf(id).call()
+
+    tokens.push({ id, owner, uri })
+  }
+
+  console.log(tokens)
+
+  res.send({
+    debug: true,
+    tokens
+  })
+})
+
 api.get('/collection/:id/', async (req, res) => {
   const { id } = req.params
 
