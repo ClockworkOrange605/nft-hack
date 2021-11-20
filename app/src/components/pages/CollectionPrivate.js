@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-import Loader from '../common/Loader'
+import Loader from '../Common/Loader'
 
 import { useAuth } from '../../providers/AuthProvider'
 

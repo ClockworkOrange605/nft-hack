@@ -1,7 +1,5 @@
 .Publisher {
   display: grid;
-  /* grid-template-rows: 1fr auto auto auto; */
-  /* grid-template-columns: 1fr 1fr; */
   grid-template-areas: "header header"
                        "metadata metadata"
                        "image animation"

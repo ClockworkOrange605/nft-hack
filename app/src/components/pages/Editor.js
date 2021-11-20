@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { useState, useEffect } from 'react'
-import { Console, Hook } from 'console-feed'
+import { Console, Hook, Decode } from 'console-feed'
 
 import { useAuth } from '../../providers/AuthProvider'
 
@@ -16,11 +16,6 @@ function IDE() {
 
   const iframeRef = useRef()
   const consoleRef = useRef()
-
-  // AutoScroll Console div
-  useEffect(() => {
-    consoleRef.current.scrollTop = consoleRef.current.scrollHeight
-  }, [logs])
 
   const { account } = useAuth()
   const [file, setFile] = useState('index.html')
@@ -43,9 +38,7 @@ function IDE() {
   }, [account, id])
 
   useEffect(() => {
-    if (account) {
-      reload()
-    }
+    if (account) { reload() }
   }, [account])
 
   function reload() {
@@ -53,22 +46,29 @@ function IDE() {
     setLogs([])
   }
 
+  function stop() {
+    iframeRef.current.src = ''
+    setLogs([])
+  }
+
   function captureLogs() {
-    Hook(
-      iframeRef.current.contentWindow.console,
-      log => setLogs(logs => [...logs, ...log])
+    Hook(iframeRef.current.contentWindow.console,
+      log => setLogs(logs => [...logs, Decode(log)])
     )
   }
 
+  // AutoScroll Console div
+  useEffect(() => {
+    consoleRef.current.scrollTop = consoleRef.current.scrollHeight
+  }, [logs])
+
   return (
     <div className="IDE">
-      <div className="toolbox">
-        <Link to={`/account/nft/${id}/mint`}>
-          <button style={{ float: 'right' }}>Mint</button>
-        </Link>
-        <button onClick={() => saveMethod()} style={{ float: 'right' }}>Save</button>
+      <div className="Header">
+        {/* <h1>Create your Coding</h1> */}
       </div>
-      <div className="workspace">
+
+      <div className="Workspace">
         <div className="fileTree">
           {files && (
             files.map(file => (
@@ -76,6 +76,7 @@ function IDE() {
             ))
           )}
         </div>
+
         <Editor
           draftId={id}
           fileName={file}
@@ -85,20 +86,38 @@ function IDE() {
           reloadFrame={reload}
         />
       </div>
+
       <div className="Preview">
+        <div className="Controls">
+          <div style={{ float: "left" }}>
+            <button onClick={() => saveMethod()}>▶ Run</button>
+            <button onClick={() => stop()}>◼ Stop</button>
+          </div>
+
+          <label htmlFor="AutoReload" style={{ float: "right", color: "#aaa", cursor: "not-allowed" }}>
+            <input id="AutoReload" type="checkbox" disabled></input>
+            Auto Reload
+          </label>
+        </div>
+
         <iframe
           className="Window"
           ref={iframeRef}
           onLoad={captureLogs}
-        // sandbox="allow-same-origin allow-scripts"
         />
+
         <div className="Console" ref={consoleRef}>
           <Console
-            logs={logs}
-            // filter={['log']}
             variant="dark"
+            logs={logs}
           />
         </div>
+      </div>
+
+      <div className="Actions">
+        <Link to={`/account/nft/${id}/mint`}>
+          Mint
+        </Link>
       </div>
     </div>
   )
@@ -118,6 +137,7 @@ function Editor({ draftId, fileName, previewFrame, consoleFrame, setSaveMethod, 
           scrollBeyondLastLine: false,
           minimap: { enabled: false },
           // rulers: [60, 120],
+          tabSize: 2
         })
       )
     }

@@ -9,6 +9,8 @@ import { useAuth } from '../../providers/AuthProvider'
 
 import * as monaco from 'monaco-editor'
 
+import Loader from '../Common/Loader'
+
 import './Publisher.css'
 
 function Publisher() {
@@ -95,7 +97,7 @@ function Publisher() {
 
   return (
     <div className="Publisher">
-      {loading && <p>Loading . . . </p>}
+      {loading && <Loader />}
 
       <div className="Header">
         {/* <h1>Review Metadata and Publish</h1> */}

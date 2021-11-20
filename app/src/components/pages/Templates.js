@@ -37,7 +37,7 @@ function Templates() {
         <p>Blank Page</p>
       </div>
 
-      <div className="Template" onClick={() => selectTemplate('p5js', 0.1)}>
+      <div className="Template" onClick={() => selectTemplate('p5js', 0.2)}>
         <div className="Logo">
           <img src={logoP5} />
         </div>

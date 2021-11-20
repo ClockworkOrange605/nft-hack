@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
-import Loader from '../common/Loader'
+import Loader from '../Common/Loader'
 
 import './Collection.css'
 

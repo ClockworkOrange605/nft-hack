@@ -5,6 +5,8 @@ import { useHistory } from "react-router-dom"
 
 import { useAuth } from '../../providers/AuthProvider'
 
+import Loader from '../Common/Loader'
+
 import './Minter.css'
 
 function Minter() {
@@ -78,13 +80,13 @@ function Minter() {
   return (
     <form id="MinterForm" onSubmit={submit}>
 
-      {loading && <p>Loading . . . </p>}
+      {loading && <Loader />}
 
       {data && (
         <div className="Minter">
-          {/* <div className="Header">
-            <h1>Token Metadata</h1>
-          </div> */}
+          <div className="Header">
+            {/* <h1>Token Metadata</h1> */}
+          </div>
 
           <div className="Metadata">
             <label htmlFor="name">
@@ -110,7 +112,7 @@ function Minter() {
               <span>Attributes</span>
               <p>Library: {data?.template?.type}</p>
               <p>Version: {data?.template?.version}</p>
-              <p>Size: ??? Kb</p>
+              <p>Source Files Size: ??? Kb</p>
             </label>
           </div>
 

@@ -1,0 +1,73 @@
+.loader {
+  position: relative;
+  width: 80px;
+  margin: 100px auto;
+}
+
+.loader .duo,
+.loader .dot {
+  animation-duration: 0.8s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+.loader .duo {
+  height: 20px;
+  width: 50px;
+  background: hsla(0, 0%, 0%, 0.0);
+  position: absolute;
+
+}
+
+.loader .duo.duo1 {
+  left: 0;
+  animation-name: spin;
+}
+
+.loader .duo.duo2 {
+  left: 30px;
+  animation-name: spin;
+  animation-direction: reverse;
+}
+
+
+.loader .duo .dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  background: #333;
+  position: absolute;
+}
+
+.loader .duo .dot.dot-a {
+  left: 0px;
+  background-color: var(--primary-account-color);
+}
+
+.loader .duo .dot.dot-b {
+  right: 0px;
+  background-color: var(--secondary-account-color);
+}
+
+.loader .duo.duo1 .dot.dot-a {
+  opacity: 0;
+  animation-name: onOff;
+  animation-direction: reverse;
+}
+
+.loader .duo.duo2 .dot.dot-b {
+  animation-name: onOff;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg) }
+   50% { transform: rotate(180deg) }
+  100% { transform: rotate(180deg) }
+}
+
+@keyframes onOff {
+    0% { opacity: 0; }
+   49% { opacity: 0; }
+   50% { opacity: 1; }
+  100% { opacity: 1; }
+}
