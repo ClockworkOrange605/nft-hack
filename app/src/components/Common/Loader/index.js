@@ -2,14 +2,14 @@ import './styles.css'
 
 function Loader() {
   return (
-    <div class="loader">
-      <div class="duo duo1">
-        <div class="dot dot-a"></div>
-        <div class="dot dot-b"></div>
+    <div className="loader">
+      <div className="duo duo1">
+        <div className="dot dot-a"></div>
+        <div className="dot dot-b"></div>
       </div>
-      <div class="duo duo2">
-        <div class="dot dot-a"></div>
-        <div class="dot dot-b"></div>
+      <div className="duo duo2">
+        <div className="dot dot-a"></div>
+        <div className="dot dot-b"></div>
       </div>
     </div>
   )

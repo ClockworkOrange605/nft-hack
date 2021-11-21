@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 
 import { useParams } from 'react-router'
-// import { useHistory } from "react-router-dom"
+import { useHistory } from "react-router-dom"
 
 import { useMetaMask } from 'metamask-react'
 
@@ -20,7 +20,7 @@ function Publisher() {
 
   const { account } = useAuth()
   const { id } = useParams()
-  // const history = useHistory()
+  const history = useHistory()
 
   const [data, setData] = useState()
   const [metadata, setMetadata] = useState()
@@ -71,28 +71,39 @@ function Publisher() {
       return alert('wrong chain selected')
     }
 
-    // https://docs.metamask.io/guide/sending-transactions.html#example
-    const transactionParameters = {
-      chainId: chain,
-
-      from: account,
-      to: contract,
-      // to: "0xd426db87ac25281e25abdbab3de547b344756a8c",
-
-      // value: '0x16345785d8a0000',
-      gasPrice: '0x4a817c800',
-      // gas: '0x30f08',
-      gas: '0x71668',
-
-      data: '0xd0def5210000000000000000000000003ed7afcc7ea8b7a00c5fbc75faa888009d1c26530000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000005068747470733a2f2f697066732e696f2f697066732f6261666b7265696463786f646d69336f667536746b6c6f78727063327770786d337a6e79783367696e6b72366a673573616c646c347172356b6a7500000000000000000000000000000000',
-    }
-
-    const txHash = await ethereum.request({
-      method: 'eth_sendTransaction',
-      params: [transactionParameters],
+    fetch(`/${account}/nft/${id}/mint`, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+        'x-auth-token': sessionStorage.getItem(account)
+      },
+      body: JSON.stringify({ metadata: data.metadata_url })
     })
+      .then(res => {
+        console.log(res)
+        res.json()
+          .then(({ tx }) => {
+            // console.log(res)
+            console.log(tx)
 
-    console.log(txHash)
+            ethereum.request({
+              method: 'eth_sendTransaction',
+              params: [tx],
+            })
+              .then(txId => {
+                console.log(txId)
+
+                fetch(`/collection/${txId}/status`)
+                  .then(res =>
+                    res.json()
+                      .then(data => {
+                        console.log(data.id)
+                        history.push(`/collection/${data.id}`)
+                      })
+                  )
+              })
+          })
+      })
   }
 
   return (

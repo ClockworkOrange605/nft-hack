@@ -76,6 +76,24 @@ console.log(
   console.log(
     await contract.methods.balanceOf(owner).call()
   )
+
+  const transactionHash = '0x30ac5e056a61d09aa17cda0b8c6717c70c1e4cc2fd961090e788b8fba34885c4'
+
+  console.log(
+    await web3.eth.getTransaction(transactionHash),
+    await web3.eth.getTransactionReceipt(transactionHash),
+  )
+
+  const transaction = await web3.eth.getTransactionReceipt(transactionHash)
+
+  console.log(
+    transaction.logs,
+    transaction.logs[0],
+    transaction.logs[0].topics,
+    transaction.logs[0].topics[3],
+    web3.utils.hexToNumber(transaction.logs[0].topics[3])
+  )
+
 }());
 
 

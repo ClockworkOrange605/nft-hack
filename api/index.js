@@ -25,7 +25,8 @@ const config = {
   },
   rpc: {
     uri: process.env.ETHER_RPC || 'mongodb://localhost:27017',
-    contract: process.env.ETHER_CONTRACT || '0x4248971983B1714e6FD93939e703398ff664c3a0'
+    contract: process.env.ETHER_CONTRACT || '0x4248971983B1714e6FD93939e703398ff664c3a0',
+    mint_value: '100000000000000000'
   },
   ipfs: {
     nft_storage_uri: 'https://api.nft.storage',
@@ -664,6 +665,48 @@ const abi = [
     "type": "function"
   }
 ]
+
+api.post('/:address/nft/:id/mint', authMiddleware, async (req, res) => {
+  const { address, id } = req.params
+  const { metadata } = req.body
+  const { account } = res.locals
+
+  // TODO: estimate normal gas price
+  const gasPrice = '20000000000'
+
+  const web3 = new Web3(config.rpc.uri)
+  const contract = new web3.eth.Contract(abi, config.rpc.contract)
+  const call = await contract.methods.mint(account, metadata)
+
+  const tx = {
+    from: account,
+    to: config.rpc.contract,
+    // value: web3.utils.toHex(config.rpc.mint_value),
+    gasPrice: web3.utils.toHex(gasPrice),
+    gas: (await call.estimateGas()).toString(),
+    data: await call.encodeABI()
+  }
+
+  res.send({
+    debug: true,
+    tx
+  })
+})
+
+api.get('/collection/:txId/status', async (req, res) => {
+  const { txId } = req.params
+
+  const web3 = new Web3(config.rpc.uri)
+  const tx = await web3.eth.getTransactionReceipt(txId)
+
+  console.log(tx)
+
+  res.send({
+    debug: true,
+    id: web3.utils.hexToNumber(tx.logs[0].topics[3]),
+    tx
+  })
+})
 
 api.get('/collection/list', async (req, res) => {
   const web3 = new Web3(config.rpc.uri)
