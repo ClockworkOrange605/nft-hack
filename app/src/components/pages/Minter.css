@@ -67,7 +67,7 @@
   outline-offset: none;
 }
 
-.Minter button {
+.Minter .Actions button {
   color: #ffffff;
   background-color: transparent;
   border: 1px solid var(--primary-account-color);
@@ -76,7 +76,56 @@
   cursor: pointer;
 }
 
-.Minter button:hover {
+.Minter .Actions button:hover {
   border-color: var(--secondary-account-color);
   color: #aaaaaa;
+}
+
+.Minter .Popup {
+  visibility: hidden;
+  position: absolute;
+  background-color: black;
+  border: 2px solid var(--primary-account-color);
+  border-radius: 50px;
+  top: 15px;
+  padding: 75px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  max-width: 775px;
+}
+
+.Minter .Popup img {
+  border: 1px solid var(--secondary-account-color);
+  margin: 10px;
+  width: 235px;
+  position: relative;
+}
+
+.Minter .Popup .Images img:hover,
+.Minter .Popup .Images img.selected {
+  border-color: green;
+}
+
+.Minter .Popup .Images picture {
+  position: relative;
+  cursor: pointer;
+}
+
+.Minter .Popup .Images picture.selected:after {
+  content: "✔";
+  color: green;
+  font-size: 32px;
+  position: absolute;
+  left: 25px;
+  bottom: 25px;
+}
+
+.Minter .Popup .Images picture:hover:after {
+  content: "✔";
+  color: green;
+  font-size: 32px;
+  position: absolute;
+  left: 25px;
+  bottom: 25px;
 }

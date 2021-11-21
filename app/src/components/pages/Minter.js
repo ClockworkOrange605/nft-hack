@@ -1,18 +1,17 @@
 import { useEffect, useState } from 'react'
-
 import { useParams } from 'react-router'
 import { useHistory } from "react-router-dom"
 
 import { useAuth } from '../../providers/AuthProvider'
-
 import Loader from '../Common/Loader'
 
 import './Minter.css'
 
 function Minter() {
+  const history = useHistory()
+
   const { account } = useAuth()
   const { id } = useParams()
-  const history = useHistory()
 
   const [data, setData] = useState()
   const [loading, setLoading] = useState(true)
@@ -31,10 +30,21 @@ function Minter() {
     }
   }, [account, id])
 
-  function selectImage(event) {
-    console.log(event)
+
+  function openPopup(event) {
+    event.preventDefault()
+    document.querySelector('.Popup').style.visibility = 'visible'
+  }
+
+  function closePopup(event) {
+    event.preventDefault()
+    document.querySelector('.Popup').style.visibility = 'hidden'
+  }
+
+  function changeImage(event) {
     event.preventDefault()
   }
+
 
   function check(data) {
     return Boolean(data?.name && data?.description)
@@ -55,6 +65,8 @@ function Minter() {
         form.get('animation')
       )
 
+      setLoading(true)
+
       fetch(`/${account}/nft/${id}/update/`, {
         method: 'POST',
         headers: {
@@ -71,9 +83,6 @@ function Minter() {
         console.log(data)
         history.push(`/account/nft/${id}/publish`)
       })
-    } else {
-
-
     }
   }
 
@@ -82,7 +91,7 @@ function Minter() {
 
       {loading && <Loader />}
 
-      {data && (
+      {!loading && data && (
         <div className="Minter">
           <div className="Header">
             {/* <h1>Token Metadata</h1> */}
@@ -94,6 +103,7 @@ function Minter() {
               <input
                 name="name"
                 type="text"
+                required
                 placeholder="Token Name"
                 defaultValue={data?.metadata?.name}
               />
@@ -103,6 +113,7 @@ function Minter() {
               <span>Description</span>
               <textarea
                 name="description"
+                required
                 placeholder="Token Description"
                 defaultValue={data?.metadata?.description}
               />
@@ -120,19 +131,15 @@ function Minter() {
             <label>
               <span>
                 Image
-                {/* <span style={{ float: 'right' }} onClick={selectImage}>Select</span> */}
+                <button style={{ float: 'right' }} onClick={openPopup}>🎨 Change</button>
               </span>
-              <img width="450" alt="" src="http://localhost:4000/temp/618a387de837537de8437cd9/preview_1.png" />
-              {/* <img width="450" alt="" src="http://localhost:4000/temp/618a387de837537de8437cd9/preview_2.png" />
-              <img width="450" alt="" src="http://localhost:4000/temp/618a387de837537de8437cd9/preview_3.png" />
-              <img width="450" alt="" src="http://localhost:4000/temp/618a387de837537de8437cd9/preview_4.png" />
-              <img width="450" alt="" src="http://localhost:4000/temp/618a387de837537de8437cd9/preview_5.png" /> */}
+              <img width="450" alt="" src="http://localhost:4000/temp/618a387de837537de8437cd9/preview_5.png" />
               <input name="image" type="hidden" defaultValue="http://localhost:4000/temp/618a387de837537de8437cd9/preview_5.png" />
             </label>
 
             <label>
               <span>Animation</span>
-              <video width="450" muted /*autoPlay*/ /*loop*/ controls controlsList="nodownload" src="http://localhost:4000/temp/618a387de837537de8437cd9/demo.mp4" />
+              <video width="450" muted autoPlay loop controls controlsList="nodownload" src="http://localhost:4000/temp/618a387de837537de8437cd9/demo.mp4" />
               <input name="animation" type="hidden" defaultValue="http://localhost:4000/temp/618a387de837537de8437cd9/demo.mp4" />
             </label>
           </div>
@@ -140,9 +147,31 @@ function Minter() {
           <div className="Actions">
             <button type="submit">Save</button>
           </div>
+
+          <div className="Popup">
+            <h2>Select Image</h2>
+            <div className="Images">
+              <picture>
+                <img width="250" alt="" src="http://localhost:4000/temp/618a387de837537de8437cd9/preview_1.png" />
+              </picture>
+              <img width="250" alt="" src="http://localhost:4000/temp/618a387de837537de8437cd9/preview_2.png" />
+              <img width="250" alt="" src="http://localhost:4000/temp/618a387de837537de8437cd9/preview_3.png" />
+              <img width="250" alt="" src="http://localhost:4000/temp/618a387de837537de8437cd9/preview_4.png" />
+              <picture className="selected">
+                <img width="250" className="selected" alt="" src="http://localhost:4000/temp/618a387de837537de8437cd9/preview_5.png" />
+              </picture>
+              <img width="250" alt="" src="http://localhost:4000/temp/618a387de837537de8437cd9/preview_6.png" />
+              <img width="250" alt="" src="http://localhost:4000/temp/618a387de837537de8437cd9/preview_7.png" />
+              <img width="250" alt="" src="http://localhost:4000/temp/618a387de837537de8437cd9/preview_8.png" />
+              <img width="250" alt="" src="http://localhost:4000/temp/618a387de837537de8437cd9/preview_9.png" />
+            </div>
+            <div>
+              <button onClick={closePopup}>❌ Cancel</button>
+              <button onClick={changeImage}>✅ Change</button>
+            </div>
+          </div>
         </div>
       )}
-
     </form>
   )
 }
