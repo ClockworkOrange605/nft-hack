@@ -9,16 +9,16 @@ import ffmpeg from 'fluent-ffmpeg'
 console.time('video')
 
 const url = 'http://pi4/preview/0xf5b07252b1782936198987cbe0fb2a9d48f61ab5/618a387de837537de8437cd9/source/index.html';
-const path = './storage/temp/618a387de837537de8437cd9/';
-// const path = './storage/temp/618a387de837537de8437cd0/';
+// const path = './storage/temp/618a387de837537de8437cd9/';
+const path = './storage/temp/618a387de837537de8437cd0/';
 
 (async () => {
   const browser = await puppeteer.launch({
     // headless: false,
     defaultViewport: {
       deviceScaleFactor: 1,
-      width: 1920, height: 1080,
-      // width: 1280, height: 720,
+      // width: 1920, height: 1080,
+      width: 1280, height: 720,
     }
   })
 
@@ -28,8 +28,8 @@ const path = './storage/temp/618a387de837537de8437cd9/';
   await page.goto(url, { waitUntil: 'domcontentloaded' })
 
   await recorder.start(`${path}demo.mp4`)
-  await page.waitForTimeout(1000 * 30)
-  // await page.waitForTimeout(1000 * 5)
+  // await page.waitForTimeout(1000 * 30)
+  await page.waitForTimeout(1000 * 5)
   await recorder.stop()
 
   await browser.close()
@@ -43,6 +43,7 @@ const path = './storage/temp/618a387de837537de8437cd9/';
       filename: 'preview.png',
       count: 9,
     })
-
-  console.timeEnd('frames')
+    .on('end', function () {
+      console.timeEnd('frames')
+    })
 })

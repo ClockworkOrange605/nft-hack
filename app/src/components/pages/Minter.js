@@ -133,14 +133,14 @@ function Minter() {
                 Image
                 <button style={{ float: 'right' }} onClick={openPopup}>🎨 Change</button>
               </span>
-              <img width="450" alt="" src="http://localhost:4000/temp/618a387de837537de8437cd0/preview_5.png" />
-              <input name="image" type="hidden" defaultValue="http://localhost:4000/temp/618a387de837537de8437cd0/preview_5.png" />
+              <img width="450" alt="" src={`http://localhost:4000/preview/${account}/${id}/media/preview_5.png`} />
+              <input name="image" type="hidden" defaultValue={`http://localhost:4000/preview/${account}/${id}/media/preview_5.png`} />
             </label>
 
             <label>
               <span>Animation</span>
-              <video width="450" muted autoPlay loop controls controlsList="nodownload" src="http://localhost:4000/temp/618a387de837537de8437cd0/demo.mp4" />
-              <input name="animation" type="hidden" defaultValue="http://localhost:4000/temp/618a387de837537de8437cd0/demo.mp4" />
+              <video width="450" muted autoPlay loop controls controlsList="nodownload" src={`http://localhost:4000/preview/${account}/${id}/media/demo.mp4`} />
+              <input name="animation" type="hidden" defaultValue={`http://localhost:4000/preview/${account}/${id}/media/demo.mp4`} />
             </label>
           </div>
 
@@ -152,18 +152,32 @@ function Minter() {
             <h2>Select Image</h2>
             <div className="Images">
               <picture>
-                <img width="250" alt="" src="http://localhost:4000/temp/618a387de837537de8437cd0/preview_1.png" />
+                <img width="250" alt="" src={`http://localhost:4000/preview/${account}/${id}/media/preview_1.png`} />
               </picture>
-              <img width="250" alt="" src="http://localhost:4000/temp/618a387de837537de8437cd0/preview_2.png" />
-              <img width="250" alt="" src="http://localhost:4000/temp/618a387de837537de8437cd0/preview_3.png" />
-              <img width="250" alt="" src="http://localhost:4000/temp/618a387de837537de8437cd0/preview_4.png" />
+              <picture>
+                <img width="250" alt="" src={`http://localhost:4000/preview/${account}/${id}/media/preview_2.png`} />
+              </picture>
+              <picture>
+                <img width="250" alt="" src={`http://localhost:4000/preview/${account}/${id}/media/preview_3.png`} />
+              </picture>
+              <picture>
+                <img width="250" alt="" src={`http://localhost:4000/preview/${account}/${id}/media/preview_4.png`} />
+              </picture>
               <picture className="selected">
-                <img width="250" className="selected" alt="" src="http://localhost:4000/temp/618a387de837537de8437cd0/preview_5.png" />
+                <img width="250" alt="" src={`http://localhost:4000/preview/${account}/${id}/media/preview_5.png`} />
               </picture>
-              <img width="250" alt="" src="http://localhost:4000/temp/618a387de837537de8437cd0/preview_6.png" />
-              <img width="250" alt="" src="http://localhost:4000/temp/618a387de837537de8437cd0/preview_7.png" />
-              <img width="250" alt="" src="http://localhost:4000/temp/618a387de837537de8437cd0/preview_8.png" />
-              <img width="250" alt="" src="http://localhost:4000/temp/618a387de837537de8437cd0/preview_9.png" />
+              <picture>
+                <img width="250" alt="" src={`http://localhost:4000/preview/${account}/${id}/media/preview_6.png`} />
+              </picture>
+              <picture>
+                <img width="250" alt="" src={`http://localhost:4000/preview/${account}/${id}/media/preview_7.png`} />
+              </picture>
+              <picture>
+                <img width="250" alt="" src={`http://localhost:4000/preview/${account}/${id}/media/preview_8.png`} />
+              </picture>
+              <picture>
+                <img width="250" alt="" src={`http://localhost:4000/preview/${account}/${id}/media/preview_9.png`} />
+              </picture>
             </div>
             <div>
               <button onClick={closePopup}>❌ Cancel</button>

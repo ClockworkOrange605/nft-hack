@@ -1,16 +1,20 @@
 import { useRef } from 'react'
 import { useState, useEffect } from 'react'
+import { useParams } from 'react-router'
+import { useHistory } from "react-router-dom"
 import { Console, Hook, Decode } from 'console-feed'
 
 import { useAuth } from '../../providers/AuthProvider'
 
+import Loader from '../Common/Loader'
+
 import * as monaco from 'monaco-editor'
 
 import './Editor.css'
-import { useParams } from 'react-router'
-import { Link } from 'react-router-dom'
 
 function IDE() {
+  const history = useHistory()
+
   const { id } = useParams()
   const [logs, setLogs] = useState([])
 
@@ -23,6 +27,8 @@ function IDE() {
 
   const [saveMethod, setSaveMethod] = useState()
 
+  const [loading, setLoading] = useState(false)
+
   useEffect(() => {
     if (account && id) {
       fetch(`/${account}/nft/${id}/files`, {
@@ -32,7 +38,6 @@ function IDE() {
       }).then(async (res) => {
         const data = await res.json()
         setFiles(data.files)
-        console.log(files)
       })
     }
   }, [account, id])
@@ -57,6 +62,19 @@ function IDE() {
     )
   }
 
+  function generateMedia() {
+    setLoading(true)
+    fetch(`/${account}/nft/${id}/media`, {
+      method: 'POST',
+      headers: {
+        'x-auth-token': sessionStorage.getItem(account)
+      }
+    }).then(res => {
+      history.push(`/account/nft/${id}/mint`)
+      setLoading(false)
+    })
+  }
+
   // AutoScroll Console div
   useEffect(() => {
     consoleRef.current.scrollTop = consoleRef.current.scrollHeight
@@ -64,6 +82,8 @@ function IDE() {
 
   return (
     <div className="IDE">
+      {loading && <Loader />}
+
       <div className="Header">
         {/* <h1>Create your Coding</h1> */}
       </div>
@@ -115,9 +135,7 @@ function IDE() {
       </div>
 
       <div className="Actions">
-        <Link to={`/account/nft/${id}/mint`}>
-          Mint
-        </Link>
+        <a onClick={generateMedia}>Save</a>
       </div>
     </div>
   )

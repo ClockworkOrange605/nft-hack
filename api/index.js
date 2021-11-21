@@ -10,11 +10,16 @@ import axios from 'axios'
 import jwt from 'jsonwebtoken'
 import ethSigUtils from 'eth-sig-util'
 
+import puppeteer from 'puppeteer'
+import { PuppeteerScreenRecorder } from 'puppeteer-screen-recorder'
+import ffmpeg from 'fluent-ffmpeg'
+
 import Web3 from 'web3'
 
 const config = {
   app: {
-    port: 4000
+    port: 4000,
+    hostname: process.env.APP_HOST || 'http://localhost:4000/'
   },
   auth: {
     secret: 'shhhhh'
@@ -142,8 +147,8 @@ api.post('/:address/nft/:id/update', authMiddleware, async (req, res) => {
   const { metadata, image, animation } = req.body
   const { account } = res.locals
 
-  const imageFile = fs.readFileSync(image.replace('http://localhost:4000', './storage'))
-  const animationFile = fs.readFileSync(animation.replace('http://localhost:4000', './storage'))
+  const imageFile = fs.readFileSync(image.replace('http://localhost:4000/preview', './storage/nfts'))
+  const animationFile = fs.readFileSync(animation.replace('http://localhost:4000/preview', './storage/nfts'))
 
   const uploadResult = await Promise.all([
     axios.post(`${config.ipfs.nft_storage_uri}/upload`, imageFile, {
@@ -214,8 +219,6 @@ api.post('/:address/nft/:id/files/:file/save', authMiddleware, async (req, res) 
 
   const path = `./storage/nfts/${account}/${id}/source/${file}`
 
-  // console.log(path, content)
-
   const result = fs.writeFileSync(path, content)
 
   res.send({
@@ -223,6 +226,54 @@ api.post('/:address/nft/:id/files/:file/save', authMiddleware, async (req, res) 
     result
   })
 })
+
+// apt install chromium ffmpeg
+api.post('/:address/nft/:id/media', authMiddleware, async (req, res) => {
+  const { address, id } = req.params
+  const { account } = res.locals
+
+  const url = `${config.app.hostname}preview/${account}/${id}/source/index.html`
+  const path = `./storage/nfts/${account}/${id}/media/`
+
+  const browser = await puppeteer.launch({
+    executablePath: '/usr/bin/chromium',
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    defaultViewport: {
+      deviceScaleFactor: 1,
+      // width: 1920, height: 1080,
+      width: 1280, height: 720,
+    }
+  })
+
+  console.time('video')
+
+  const page = await browser.newPage()
+  const recorder = new PuppeteerScreenRecorder(page)
+  await page.goto(url, { waitUntil: 'domcontentloaded' })
+
+  await recorder.start(`${path}demo.mp4`)
+  await page.waitForTimeout(1000 * 5)
+  await recorder.stop()
+
+  await browser.close()
+
+  console.timeEnd('video')
+  console.time('frames')
+
+  ffmpeg(`${path}demo.mp4`)
+    .screenshots({
+      folder: path,
+      filename: 'preview.png',
+      count: 9,
+    })
+    .on('end', function () {
+      console.timeEnd('frames')
+      res.send({
+        debug: true
+      })
+    })
+})
+
 
 /* Collection */
 //TODO: completly refactor
