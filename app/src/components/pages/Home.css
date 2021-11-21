@@ -4,21 +4,25 @@
   padding: 25px;
 }
 
-.Home .Latest {
-  border: 1px solid var(--primary-account-color);
+.Home .Block {
   border-radius: 25px;
-  padding: 20px;
+  padding: 15px 20px 40px;
 }
 
-.Home .Latest .Tokens {
+.Home .Block .Tokens {
   display: flex;
   flex-direction: row;
   gap: 10px;
 }
 
-.Home .Latest .Tokens .Item {
+.Home .Block .Tokens .Item {
   border: 1px solid var(--secondary-account-color);
   border-radius: 25px;
   width: 250px;
-  padding: 20px;
+  padding: 20px 20px 5px;
+}
+
+.Home .Block .Tokens .Item:hover {
+  border-color: var(--primary-account-color);
+  cursor: pointer;
 }

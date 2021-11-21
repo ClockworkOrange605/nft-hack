@@ -5,7 +5,6 @@
 }
 
 .Collection .Filter {
-  background: hotpink;
   width: 215px;
   height: 900px;
 }
@@ -24,11 +23,9 @@
   background: #111;
   border: 1px solid var(--primary-account-color);
   border-radius: 50px;
-  height: 500px;
+  height: 420px;
   width: 340px;
   cursor: pointer;
-  text-align: center;
-  text-justify: center;
 }
 
 .Collection .List .Item:hover {
@@ -41,7 +38,6 @@
   width: 290px;
   height: 290px;
   padding: 25px;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -64,4 +60,8 @@
 .Collection .List .Item:hover .Image img {
   max-height: 310px;
   max-width: 310px;
+}
+
+.Collection .List .Item p {
+  margin: 20px 25px;
 }

@@ -29,9 +29,9 @@ function Drafts() {
 
   return (
     <div className="Drafts">
-      <h1>Choose NFT Draft</h1>
-
       {loading && <Loader />}
+
+      {data && <h1>Choose NFT Draft</h1>}
 
       {data && data.map(item =>
         <Link to={`/account/nft/${item._id}/edit`}>

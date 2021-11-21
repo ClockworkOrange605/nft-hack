@@ -1,9 +1,14 @@
 .Drafts {
   display: grid;
+  grid-template-areas: "loader loader loader loader";
   grid-template-columns: repeat(4, 200px);
   justify-content: space-evenly;
   gap: 25px;
   padding: 25px;
+}
+
+.Drafts .loader {
+  grid-area: loader;
 }
 
 .Drafts h1 {

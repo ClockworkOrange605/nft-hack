@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 
+import Loader from '../Common/Loader'
+
 import './CollectionToken.css'
 
 function CollectionToken() {
   const { id } = useParams()
 
+  const [loading, setLoading] = useState(true)
   const [token, setToken] = useState()
   const [events, setEvents] = useState()
   const [metadata, setMetaData] = useState()
@@ -19,45 +22,74 @@ function CollectionToken() {
             setEvents(data.events)
 
             fetch(data.token.uri)
-              .then(res => res.json().then(metadata => setMetaData(metadata)))
+              .then(res =>
+                res.json()
+                  .then(metadata => {
+                    setMetaData(metadata)
+                    setLoading(false)
+                  })
+              )
           })
       )
   }, [])
 
   return (
     <div className="Token">
-      <div className="Info">
-        <img width="245" src={metadata?.image} alt={metadata?.name} />
+      {loading && <Loader />}
 
-        <p>
-          <b>Name:</b> {metadata?.name}
-        </p>
+      {token && (
+        <div className="Info">
+          <img width="245" src={metadata?.image} alt={metadata?.name} />
 
-        <p>
-          <b>Owner:</b> {token?.owner}
-        </p>
+          <br />
 
-        {/* <p>{token?.id}</p> */}
-        {/* <p>{token?.uri}</p> */}
-      </div>
+          <div>
+            <b>ID:</b>
+            <span style={{ color: '#888888', float: 'right' }}>{token?.id}</span>
+          </div>
 
-      <div className="Details">
-        <p>
-          <b>Description:</b> {metadata?.description} Description  Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description
-        </p>
+          <div>
+            <b>Name:</b>
+            <span style={{ color: '#888888', float: 'right' }}>{metadata?.name}</span>
+          </div>
 
-        <video width="550" muted autoPlay loop controls controlsList="nodownload" src={metadata?.animation_url} />
+          <div>
+            <b>Owner:</b>
+            <span style={{ color: '#888888', float: 'right' }}>
+              0x
+              <span style={{ 'color': `#${token?.owner.slice(2, 8)}` }}>
+                {token.owner.slice(2, 8)}
+              </span>
+              . . .
+              <span style={{ 'color': `#${token?.owner.slice(-6)}` }}>
+                {token.owner.slice(-6)}
+              </span>
+            </span>
+          </div>
+        </div>
+      )}
 
-        <p>
-          {events && events.map(event => (
-            <p>
-              <span>{event.event}</span>
-              <span>{event.returnValues.from}</span>
-              <span>{event.returnValues.to}</span>
-            </p>
-          ))}
-        </p>
-      </div>
+      {token && (
+        <div className="Details">
+          <video width="550" muted autoPlay loop controls controlsList="nodownload" src={metadata?.animation_url} />
+
+          <div>
+            <h3>Description</h3>
+            {metadata?.description} Description  Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description
+          </div>
+
+          <div>
+            <h3>Token Events</h3>
+            {events && events.map(event => (
+              <div>
+                <p>{event.event}</p>
+                <p>from: {event.returnValues.from}</p>
+                <p>to: {event.returnValues.to}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

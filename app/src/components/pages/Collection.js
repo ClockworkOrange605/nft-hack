@@ -47,10 +47,9 @@ function CollectionItem({ token }) {
         <div className="Image">
           <img src={metadata?.image} />
         </div>
-        <p>{metadata?.name}</p>
-        <p>{metadata?.description}</p>
         <p>
-          <span style={{ color: '#888888' }}>
+          #{token.id} {metadata?.name}
+          <span style={{ color: '#888888', float: 'right' }}>
             0x
             <span style={{ 'color': `#${token.owner.slice(2, 8)}` }}>
               {token.owner.slice(2, 8)}
