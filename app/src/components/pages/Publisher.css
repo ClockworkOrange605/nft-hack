@@ -1,11 +1,17 @@
 .Publisher {
   display: grid;
-  grid-template-areas: "header header"
-                       "metadata metadata"
-                       "image animation"
-                       "actions actions";
+  grid-template-areas:
+    "loader loader"
+    "header header"
+    "metadata metadata"
+    "image animation"
+    "actions actions";
   padding: 0 25px;
   gap: 25px;
+}
+
+.Publisher .loader {
+  grid-area: loader;
 }
 
 .Publisher .Header {

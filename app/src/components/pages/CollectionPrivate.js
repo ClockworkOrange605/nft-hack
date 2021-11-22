@@ -11,6 +11,7 @@ function Collection() {
   const { account } = useAuth()
 
   const [tokens, setTokens] = useState()
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     fetch(`/${account}/collection/list/`, {
@@ -22,18 +23,22 @@ function Collection() {
         res.json()
           .then(data => {
             setTokens(data.tokens)
-            console.log(data)
+            setLoading(false)
           })
       })
   }, [])
 
   return (
     <div className="CollectionPrivate">
-      <div className="Filter"></div>
-      {tokens ?
+      {loading && <Loader />}
+
+      {!loading && <div className="Filter" />}
+
+      {tokens && (
         <div className="List">
           {tokens.map(item => <CollectionItem key={item.id} token={item} />)}
-        </div> : <Loader />}
+        </div>
+      )}
     </div>
   )
 }

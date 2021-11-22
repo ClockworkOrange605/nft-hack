@@ -2,6 +2,7 @@
   display: grid;
   grid-template-columns: 1.5fr 1fr;
   grid-template-areas:
+    "loader loader"
     "header header"
     "workspace preview"
     "actions actions";
@@ -9,6 +10,10 @@
   min-height: 300px;
   grid-gap: 0px;
   padding-top: 10px;
+}
+
+.IDE .loader {
+  grid-area: loader;
 }
 
 .IDE .Header {

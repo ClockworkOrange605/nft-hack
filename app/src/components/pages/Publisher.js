@@ -39,12 +39,18 @@ function Publisher() {
 
         fetch(data.metadata_url)
           .then(async (res) => {
-            const metadata = await res.json()
-            setMetadata(metadata)
-            const code = await monaco.editor.colorize(JSON.stringify(metadata, null, '\t'), 'json')
+            console.log(res)
 
-            setCode(code)
+            const metadata = await res.json()
             setLoading(false)
+
+            console.log(metadata)
+
+            const code = await monaco.editor.colorize(
+              JSON.stringify(metadata, null, '\t'), 'json')
+
+            setMetadata(metadata)
+            setCode(code)
           })
       })
     }
@@ -59,7 +65,6 @@ function Publisher() {
   async function publish() {
     //TODO: add env variables
     const chain = '0x539'
-    const contract = '0x4248971983B1714e6FD93939e703398ff664c3a0'
 
     //TODO: make account check
     if (address !== account) {
@@ -83,7 +88,6 @@ function Publisher() {
         console.log(res)
         res.json()
           .then(({ tx }) => {
-            // console.log(res)
             console.log(tx)
 
             ethereum.request({
@@ -110,34 +114,44 @@ function Publisher() {
     <div className="Publisher">
       {loading && <Loader />}
 
-      <div className="Header">
-        {/* <h1>Review Metadata and Publish</h1> */}
-      </div>
+      {!loading &&
+        <div className="Header">
+          {/* <h1>Review Metadata and Publish</h1> */}
+        </div>
+      }
 
-      <div className="Metadata">
-        <h2>
-          Metadata <a href={data?.metadata_url} target="_blank" rel="noreferer">{data?.metadata_url}</a>
-        </h2>
-        <code ref={codeRef} />
-      </div>
+      {!loading &&
+        <div className="Metadata">
+          <h2>
+            Metadata <a href={data?.metadata_url} target="_blank" rel="noreferer">{data?.metadata_url}</a>
+          </h2>
+          <code ref={codeRef} />
+        </div>
+      }
 
-      <div className="Image">
-        <h2>
-          Image <a href={metadata?.image} target="_blank" rel="noreferer">{metadata?.image}</a>
-        </h2>
-        <img width="450" src={metadata?.image} />
-      </div>
+      {!loading &&
+        <div className="Image">
+          <h2>
+            Image <a href={metadata?.image} target="_blank" rel="noreferer">{metadata?.image}</a>
+          </h2>
+          <img width="450" src={metadata?.image} />
+        </div>
+      }
 
-      <div className="Animation">
-        <h2>
-          Animation <a href={metadata?.animation_url} target="_blank" rel="noreferer">{metadata?.animation_url}</a>
-        </h2>
-        <video width="450" muted autoPlay /*loop*/ controls controlsList="nodownload" src={metadata?.animation_url} />
-      </div>
+      {!loading &&
+        <div className="Animation">
+          <h2>
+            Animation <a href={metadata?.animation_url} target="_blank" rel="noreferer">{metadata?.animation_url}</a>
+          </h2>
+          <video width="450" muted autoPlay /*loop*/ controls controlsList="nodownload" src={metadata?.animation_url} />
+        </div>
+      }
 
-      <div className="Actions">
-        <button onClick={publish}>Publish</button>
-      </div>
+      {!loading &&
+        <div className="Actions">
+          <button onClick={publish}>Publish</button>
+        </div>
+      }
     </div>
   )
 }

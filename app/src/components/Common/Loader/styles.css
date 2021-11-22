@@ -71,3 +71,10 @@
    50% { opacity: 1; }
   100% { opacity: 1; }
 }
+
+.loader .message {
+  padding: 5px 0;
+  margin: 0 -300px;
+  text-align: center;
+  font-size: 36px;
+}

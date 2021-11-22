@@ -82,61 +82,66 @@ function IDE() {
 
   return (
     <div className="IDE">
-      {loading && <Loader />}
+      {loading && <Loader message="Generating Media Files" />}
 
-      <div className="Header">
-        {/* <h1>Create your Coding</h1> */}
-      </div>
-
-      <div className="Workspace">
-        <div className="fileTree">
-          {files && (
-            files.map(file => (
-              <p onClick={() => setFile(file.name)}>{file.name}</p>
-            ))
-          )}
+      {!loading && (
+        <div className="Header">
+          {/* <h1>Create your Coding</h1> */}
         </div>
-
-        <Editor
-          draftId={id}
-          fileName={file}
-          previewFrame={iframeRef}
-          consoleFrame={consoleRef}
-          setSaveMethod={setSaveMethod}
-          reloadFrame={reload}
-        />
-      </div>
-
-      <div className="Preview">
-        <div className="Controls">
-          <div style={{ float: "left" }}>
-            <button onClick={() => saveMethod()}>▶ Run</button>
-            <button onClick={() => stop()}>◼ Stop</button>
+      )}
+      {!loading && (
+        <div className="Workspace">
+          <div className="fileTree">
+            {files && (
+              files.map(file => (
+                <p onClick={() => setFile(file.name)}>{file.name}</p>
+              ))
+            )}
           </div>
 
-          <label htmlFor="AutoReload" style={{ float: "right", color: "#aaa", cursor: "not-allowed" }}>
-            <input id="AutoReload" type="checkbox" disabled></input>
-            Auto Reload
-          </label>
-        </div>
-
-        <iframe
-          className="Window"
-          ref={iframeRef}
-          onLoad={captureLogs}
-        />
-
-        <div className="Console" ref={consoleRef}>
-          <Console
-            variant="dark"
-            logs={logs}
+          <Editor
+            draftId={id}
+            fileName={file}
+            previewFrame={iframeRef}
+            consoleFrame={consoleRef}
+            setSaveMethod={setSaveMethod}
+            reloadFrame={reload}
           />
         </div>
-      </div>
+      )}
+      {!loading && (
+        <div className="Preview">
+          <div className="Controls">
+            <div style={{ float: "left" }}>
+              <button onClick={() => saveMethod()}>▶ Run</button>
+              <button onClick={() => stop()}>◼ Stop</button>
+            </div>
 
-      <div className="Actions">
-        <a onClick={generateMedia}>Save</a>
-      </div>
+            <label htmlFor="AutoReload" style={{ float: "right", color: "#aaa", cursor: "not-allowed" }}>
+              <input id="AutoReload" type="checkbox" disabled></input>
+              Auto Reload
+            </label>
+          </div>
+
+          <iframe
+            className="Window"
+            ref={iframeRef}
+            onLoad={captureLogs}
+          />
+
+          <div className="Console" ref={consoleRef}>
+            <Console
+              variant="dark"
+              logs={logs}
+            />
+          </div>
+        </div>
+      )}
+      {!loading && (
+        <div className="Actions">
+          <a onClick={generateMedia}>Save</a>
+        </div>
+      )}
     </div>
   )
 }

@@ -15,6 +15,7 @@ function Minter() {
 
   const [data, setData] = useState()
   const [loading, setLoading] = useState(true)
+  const [loaderMessage, setloaderMessage] = useState()
 
   useEffect(() => {
     if (account && id) {
@@ -65,6 +66,7 @@ function Minter() {
         form.get('animation')
       )
 
+      setloaderMessage("Uploading Metadata to IPFS")
       setLoading(true)
 
       fetch(`/${account}/nft/${id}/update/`, {
@@ -89,7 +91,7 @@ function Minter() {
   return (
     <form id="MinterForm" onSubmit={submit}>
 
-      {loading && <Loader />}
+      {loading && <Loader message={loaderMessage} />}
 
       {!loading && data && (
         <div className="Minter">

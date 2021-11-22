@@ -6,6 +6,7 @@ import Loader from '../Common/Loader'
 import './Collection.css'
 
 function Collection() {
+  const [loading, setLoading] = useState(true)
   const [tokens, setTokens] = useState()
 
   useEffect(() => {
@@ -14,18 +15,22 @@ function Collection() {
         res.json()
           .then(data => {
             setTokens(data.tokens)
-            console.log(data)
+            setLoading(false)
           })
       })
   }, [])
 
   return (
     <div className="Collection">
-      <div className="Filter"></div>
-      {tokens ?
+      {loading && <Loader />}
+
+      {!loading && <div className="Filter" />}
+
+      {tokens && (
         <div className="List">
           {tokens.map(item => <CollectionItem key={item.id} token={item} />)}
-        </div> : <Loader />}
+        </div>
+      )}
     </div>
   )
 }
