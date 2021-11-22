@@ -89,7 +89,7 @@ api.get('/auth/:address/check', authMiddleware, (req, res) => {
 /* NFT */
 api.post('/:address/nft/create/', authMiddleware, async (req, res) => {
   const { address } = req.params
-  const { type, version } = req.body
+  const { type, version, template } = req.body
   const { account } = res.locals
 
   //TODO: refactor DB connection
@@ -99,9 +99,7 @@ api.post('/:address/nft/create/', authMiddleware, async (req, res) => {
 
   const { insertedId: id } = await collection.insertOne({
     address: account,
-    template: {
-      type, version
-    },
+    template,
     created_at: Date.now()
   })
 
@@ -191,25 +189,31 @@ api.post('/:address/nft/:id/update', authMiddleware, async (req, res) => {
 })
 
 /* Editor */
+
 api.get('/:address/nft/:id/files', authMiddleware, async (req, res) => {
   const { address, id } = req.params
   const { account } = res.locals
 
-  const dir = await fs.promises.opendir(`./storage/nfts/${account}/${id}/source/`)
+  const path = `./storage/nfts/${account}/${id}/source/`
+  const dir = await fs.promises.opendir(path)
 
   const files = []
-  let current
+  let current, size = 0
 
   while (current = dir.readSync()) {
+    // console.log(
+    size += fs.statSync(path + current.name).size
+    // )
     files.push({
       name: current.name,
       isDir: current.isDirectory(),
       isFile: current.isFile(),
     })
   }
+  console.log(size)
   dir.close()
 
-  res.send({ files })
+  res.send({ files, size })
 })
 
 api.post('/:address/nft/:id/files/:file/save', authMiddleware, async (req, res) => {

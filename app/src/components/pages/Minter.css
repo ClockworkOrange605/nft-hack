@@ -88,11 +88,21 @@
   border: 2px solid var(--primary-account-color);
   border-radius: 50px;
   top: 15px;
-  padding: 75px;
+  padding: 35px 75px;
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
   max-width: 775px;
+}
+
+.Minter .Popup .CloseButton{
+  float: right;
+  font-size: 40px;
+  color: black;
+  position: absolute;
+  right: 35px;
+  top: 35px;
+  cursor: pointer;
 }
 
 .Minter .Popup img {
@@ -129,3 +139,4 @@
   left: 25px;
   bottom: 25px;
 }
+

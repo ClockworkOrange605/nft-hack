@@ -39,6 +39,15 @@ function IDE() {
         const data = await res.json()
         setFiles(data.files)
       })
+
+      fetch(`/${account}/nft/${id}/`, {
+        headers: {
+          'x-auth-token': sessionStorage.getItem(account)
+        }
+      }).then(async (res) => {
+        const data = await res.json()
+        setFile(data.template.template.main)
+      })
     }
   }, [account, id])
 
@@ -93,8 +102,11 @@ function IDE() {
         <div className="Workspace">
           <div className="fileTree">
             {files && (
-              files.map(file => (
-                <p onClick={() => setFile(file.name)}>{file.name}</p>
+              files.map(item => (
+                <p
+                  className={item.name == file ? 'selected' : ''}
+                  onClick={() => setFile(item.name)}
+                >{item.name}</p>
               ))
             )}
           </div>

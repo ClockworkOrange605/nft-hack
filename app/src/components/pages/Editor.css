@@ -55,6 +55,7 @@
   border-color: #555;
   background-color: #555;
   color: #aaaaaa;
+  cursor: default;
 }
 
 .IDE .Workspace .EditorInstance {

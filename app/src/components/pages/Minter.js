@@ -14,11 +14,23 @@ function Minter() {
   const { id } = useParams()
 
   const [data, setData] = useState()
+  const [size, setSize] = useState()
   const [loading, setLoading] = useState(true)
   const [loaderMessage, setloaderMessage] = useState()
 
+  const [selectedImage, selectImage] = useState(`http://localhost:4000/preview/${account}/${id}/media/preview_5.png`)
+
+  function sizeConverter(Num = 0, dec = 2) {
+    if (Num < 1000)
+      return Num + " Bytes"
+    Num = ("0".repeat((Num += "").length * 2 % 3) + Num).match(/.{3}/g)
+    return Number(Num[0]) + "." + Num[1].substring(0, dec) + " " + "  kMGTPEZY"[Num.length] + "B"
+  }
+
   useEffect(() => {
     if (account && id) {
+      console.log(`./storage/nfts/${account}/${id}/source/`)
+
       fetch(`/${account}/nft/${id}/`, {
         headers: {
           'x-auth-token': sessionStorage.getItem(account)
@@ -27,6 +39,15 @@ function Minter() {
         const data = await res.json()
         setData(data)
         setLoading(false)
+      })
+
+      fetch(`/${account}/nft/${id}/files`, {
+        headers: {
+          'x-auth-token': sessionStorage.getItem(account)
+        }
+      }).then(async (res) => {
+        const data = await res.json()
+        setSize(data.size)
       })
     }
   }, [account, id])
@@ -42,11 +63,6 @@ function Minter() {
     document.querySelector('.Popup').style.visibility = 'hidden'
   }
 
-  function changeImage(event) {
-    event.preventDefault()
-  }
-
-
   function check(data) {
     return Boolean(data?.name && data?.description)
   }
@@ -55,17 +71,26 @@ function Minter() {
     event.preventDefault()
 
     const form = new FormData(document.querySelector('form'))
-    const data = {
+    const metadata = {
       name: form.get('name'),
-      description: form.get('description')
+      description: form.get('description'),
+      attributes: [
+        {
+          trait_type: "library",
+          value: data?.template?.library?.name
+        },
+        {
+          trait_type: "library_version",
+          value: data?.template?.library?.version
+        },
+        {
+          trait_type: "sources_size",
+          value: sizeConverter(size)
+        },
+      ]
     }
 
-    if (check(data)) {
-      console.log(
-        form.get('image'),
-        form.get('animation')
-      )
-
+    if (check(metadata)) {
       setloaderMessage("Uploading Metadata to IPFS")
       setLoading(true)
 
@@ -76,7 +101,7 @@ function Minter() {
           'x-auth-token': sessionStorage.getItem(account)
         },
         body: JSON.stringify({
-          metadata: data,
+          metadata,
           image: form.get('image'),
           animation: form.get('animation')
         })
@@ -123,9 +148,9 @@ function Minter() {
 
             <label>
               <span>Attributes</span>
-              <p>Library: {data?.template?.type}</p>
-              <p>Version: {data?.template?.version}</p>
-              <p>Source Files Size: ??? Kb</p>
+              <p>Library: {data?.template?.library?.name}</p>
+              <p>Library Version: {data?.template?.library?.version}</p>
+              <p>Sources Size: {sizeConverter(size)}</p>
             </label>
           </div>
 
@@ -135,8 +160,8 @@ function Minter() {
                 Image
                 <button style={{ float: 'right' }} onClick={openPopup}>🎨 Change</button>
               </span>
-              <img width="450" alt="" src={`http://localhost:4000/preview/${account}/${id}/media/preview_5.png`} />
-              <input name="image" type="hidden" defaultValue={`http://localhost:4000/preview/${account}/${id}/media/preview_5.png`} />
+              <img width="450" alt="" src={selectedImage} />
+              <input name="image" type="hidden" defaultValue={selectedImage} />
             </label>
 
             <label>
@@ -151,39 +176,52 @@ function Minter() {
           </div>
 
           <div className="Popup">
-            <h2>Select Image</h2>
+            <h1>Select Image</h1>
+            <a onClick={closePopup} className="CloseButton">❌</a>
             <div className="Images">
-              <picture>
+              {new Array(9).fill("", 0, 9).map((p, i) =>
+                <picture
+                  key={i}
+                  className={selectedImage == `http://localhost:4000/preview/${account}/${id}/media/preview_${i + 1}.png` ? 'selected' : ''}
+                  onClick={() => {
+                    selectImage(`http://localhost:4000/preview/${account}/${id}/media/preview_${i + 1}.png`)
+                  }}
+                >
+                  <img width="250" alt={p} src={`http://localhost:4000/preview/${account}/${id}/media/preview_${i + 1}.png`} />
+                </picture>
+              )}
+
+              {/* <picture className={selectedImage == `http://localhost:4000/preview/${account}/${id}/media/preview_1.png` ? 'selected' : ''}>
                 <img width="250" alt="" src={`http://localhost:4000/preview/${account}/${id}/media/preview_1.png`} />
               </picture>
-              <picture>
+              <picture className={selectedImage == `http://localhost:4000/preview/${account}/${id}/media/preview_2.png` ? 'selected' : ''}>
                 <img width="250" alt="" src={`http://localhost:4000/preview/${account}/${id}/media/preview_2.png`} />
               </picture>
-              <picture>
+              <picture className={selectedImage == `http://localhost:4000/preview/${account}/${id}/media/preview_3.png` ? 'selected' : ''}>
                 <img width="250" alt="" src={`http://localhost:4000/preview/${account}/${id}/media/preview_3.png`} />
               </picture>
-              <picture>
+              <picture className={selectedImage == `http://localhost:4000/preview/${account}/${id}/media/preview_4.png` ? 'selected' : ''}>
                 <img width="250" alt="" src={`http://localhost:4000/preview/${account}/${id}/media/preview_4.png`} />
               </picture>
-              <picture className="selected">
+              <picture className={selectedImage == `http://localhost:4000/preview/${account}/${id}/media/preview_5.png` ? 'selected' : ''}>
                 <img width="250" alt="" src={`http://localhost:4000/preview/${account}/${id}/media/preview_5.png`} />
               </picture>
-              <picture>
+              <picture className={selectedImage == `http://localhost:4000/preview/${account}/${id}/media/preview_6.png` ? 'selected' : ''}>
                 <img width="250" alt="" src={`http://localhost:4000/preview/${account}/${id}/media/preview_6.png`} />
               </picture>
-              <picture>
+              <picture className={selectedImage == `http://localhost:4000/preview/${account}/${id}/media/preview_7.png` ? 'selected' : ''}>
                 <img width="250" alt="" src={`http://localhost:4000/preview/${account}/${id}/media/preview_7.png`} />
               </picture>
-              <picture>
+              <picture className={selectedImage == `http://localhost:4000/preview/${account}/${id}/media/preview_8.png` ? 'selected' : ''}>
                 <img width="250" alt="" src={`http://localhost:4000/preview/${account}/${id}/media/preview_8.png`} />
               </picture>
-              <picture>
+              <picture className={selectedImage == `http://localhost:4000/preview/${account}/${id}/media/preview_9.png` ? 'selected' : ''}>
                 <img width="250" alt="" src={`http://localhost:4000/preview/${account}/${id}/media/preview_9.png`} />
-              </picture>
+              </picture> */}
             </div>
             <div>
-              <button onClick={closePopup}>❌ Cancel</button>
-              <button onClick={changeImage}>✅ Change</button>
+              {/* <button onClick={closePopup}>❌ Close</button> */}
+              {/* <button onClick={changeImage}>✅ Change</button> */}
             </div>
           </div>
         </div>

@@ -3,8 +3,8 @@
   grid-template-areas:
     "loader loader"
     "header header"
-    "metadata metadata"
     "image animation"
+    "metadata metadata"
     "actions actions";
   padding: 0 25px;
   gap: 25px;
