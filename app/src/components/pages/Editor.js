@@ -22,7 +22,7 @@ function IDE() {
   const consoleRef = useRef()
 
   const { account } = useAuth()
-  const [file, setFile] = useState('index.html')
+  const [file, setFile] = useState()
   const [files, setFiles] = useState([])
 
   const [saveMethod, setSaveMethod] = useState()
@@ -51,9 +51,9 @@ function IDE() {
     }
   }, [account, id])
 
-  useEffect(() => {
-    if (account) { reload() }
-  }, [account])
+  // useEffect(() => {
+  //   if (account) { reload() }
+  // }, [account])
 
   function reload() {
     iframeRef.current.src = `/preview/${account}/${id}/source/index.html`

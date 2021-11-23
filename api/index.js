@@ -106,7 +106,6 @@ api.post('/:address/nft/create/', authMiddleware, async (req, res) => {
   const templatePath = `/storage/templates/${type}/${version}/*`
   const nftSourcePath = `/storage/nfts/${account}/${id}/source/`
 
-  console.log(templatePath, '->', nftSourcePath)
   copy(templatePath, nftSourcePath)
 
   res.send({ id })
@@ -179,6 +178,7 @@ api.post('/:address/nft/:id/update', authMiddleware, async (req, res) => {
     { _id: ObjectId(id), address: account },
     {
       $set: {
+        image: image,
         metadata_url: metadataUrl,
         metadata: { ...metadata, image: image_url, animation_url }
       }
@@ -201,16 +201,15 @@ api.get('/:address/nft/:id/files', authMiddleware, async (req, res) => {
   let current, size = 0
 
   while (current = dir.readSync()) {
-    // console.log(
     size += fs.statSync(path + current.name).size
-    // )
+
     files.push({
       name: current.name,
       isDir: current.isDirectory(),
       isFile: current.isFile(),
     })
   }
-  console.log(size)
+
   dir.close()
 
   res.send({ files, size })
@@ -754,8 +753,6 @@ api.get('/collection/:txId/status', async (req, res) => {
   const web3 = new Web3(config.rpc.uri)
   const tx = await web3.eth.getTransactionReceipt(txId)
 
-  console.log(tx)
-
   res.send({
     debug: true,
     id: web3.utils.hexToNumber(tx.logs[0].topics[3]),
@@ -789,7 +786,7 @@ api.get('/collection/latests', async (req, res) => {
 
   const tokens = []
   const total = await contract.methods.totalSupply().call()
-  // console.log(total, typeof total)
+
   for (let index = total - 1; index > total - 4; index--) {
     const id = await contract.methods.tokenByIndex(index).call()
     const uri = await contract.methods.tokenURI(id).call()
@@ -797,8 +794,6 @@ api.get('/collection/latests', async (req, res) => {
 
     tokens.push({ id, owner, uri })
   }
-
-  console.log(tokens)
 
   res.send({
     debug: true,
@@ -854,10 +849,6 @@ api.get('/:address/collection/list', authMiddleware, async (req, res) => {
 
 //TODO: add auth middlware (Make sure preview page keep working)
 api.use('/preview', express.static('storage/nfts'))
-
-//TODO: remove
-api.use('/temp', express.static('storage/temp'))
-
 
 api.listen(config.app.port, () => {
   console.log(`Example app listening at http://localhost:${config.app.port}`)
