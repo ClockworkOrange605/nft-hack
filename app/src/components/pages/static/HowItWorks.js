@@ -4,8 +4,8 @@ function HowItWorks() {
   return (
     <div className="HowTo">
       <div className="Links">
-        <a><p id="toCollectors" >to Collectors</p></a>
-        <a><p id="toCreators" >to Creators</p></a>
+        <p id="toCollectors" >to Collectors</p>
+        <p id="toCreators" >to Creators</p>
       </div>
 
       <div className="Content">
@@ -13,7 +13,7 @@ function HowItWorks() {
           <div className="Block">
             <img src="/assets/screens/collectors/browse.png" alt="Browse Collection" />
             <p>
-              <b>Browse</b> Collection Tokens on this site or any marketplace that support Ethereum ERC-721 Tokens, like <a href="https://opensea.io/" target="_blank" rel="noreferer">OpenSea</a> or <a href="https://rarible.com/" target="_blank" rel="noreferer">Rarible</a>
+              <b>Browse</b> Collection Tokens on this site or any marketplace that support Ethereum ERC-721 Tokens, like <a href="https://opensea.io/" target="_blank" rel="noreferrer">OpenSea</a> or <a href="https://rarible.com/" target="_blank" rel="noreferrer">Rarible</a>
             </p>
           </div>
           <div className="Block">

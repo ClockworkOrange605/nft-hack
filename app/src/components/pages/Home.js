@@ -28,7 +28,7 @@ function Home() {
           </h2>
           <div className="Tokens">
             {data?.tokens && data.tokens.map(token => (
-              <Token token={token} />
+              <Token key={token.id} token={token} />
             ))}
           </div>
         </div>
@@ -41,7 +41,7 @@ function Home() {
           </h2>
           <div className="Tokens">
             {data?.tokens && data.tokens.map(token => (
-              <Token token={token} />
+              <Token key={token.id} token={token} />
             ))}
           </div>
         </div>
@@ -61,12 +61,12 @@ function Token({ token }) {
           setMetadata(metadata)
         )
       )
-  }, [])
+  }, [token])
 
   return (
     <Link to={`/collection/${token.id}`}>
       <div className="Item">
-        <img width="250" src={metadata?.image} />
+        <img width="250" src={metadata?.image} alt="" />
         <p>
           #{token.id} {metadata?.name}
 

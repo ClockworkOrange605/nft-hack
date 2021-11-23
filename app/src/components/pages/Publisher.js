@@ -39,12 +39,8 @@ function Publisher() {
 
         fetch(data.metadata_url)
           .then(async (res) => {
-            console.log(res)
-
             const metadata = await res.json()
             setLoading(false)
-
-            console.log(metadata)
 
             const code = await monaco.editor.colorize(
               JSON.stringify(metadata, null, '\t'), 'json')
@@ -95,13 +91,10 @@ function Publisher() {
               params: [tx],
             })
               .then(txId => {
-                console.log(txId)
-
                 fetch(`/collection/${txId}/status`)
                   .then(res =>
                     res.json()
                       .then(data => {
-                        console.log(data.id)
                         history.push(`/collection/${data.id}`)
                       })
                   )
@@ -123,7 +116,7 @@ function Publisher() {
       {!loading &&
         <div className="Metadata">
           <h2>
-            Metadata <a href={data?.metadata_url} target="_blank" rel="noreferer">{data?.metadata_url}</a>
+            Metadata <a href={data?.metadata_url} target="_blank" rel="noreferrer">{data?.metadata_url}</a>
           </h2>
           <code ref={codeRef} />
         </div>
@@ -132,18 +125,18 @@ function Publisher() {
       {!loading &&
         <div className="Image">
           <h2>
-            Image <a href={metadata?.image} target="_blank" rel="noreferer">{metadata?.image}</a>
+            Image <a href={metadata?.image} target="_blank" rel="noreferrer">{metadata?.image}</a>
           </h2>
-          <img width="450" src={metadata?.image} />
+          <img width="450" src={metadata?.image} alt="" />
         </div>
       }
 
       {!loading &&
         <div className="Animation">
           <h2>
-            Animation <a href={metadata?.animation_url} target="_blank" rel="noreferer">{metadata?.animation_url}</a>
+            Animation <a href={metadata?.animation_url} target="_blank" rel="noreferrer">{metadata?.animation_url}</a>
           </h2>
-          <video width="450" muted autoPlay /*loop*/ controls controlsList="nodownload" src={metadata?.animation_url} />
+          <video width="450" muted autoPlay loop controls controlsList="nodownload" src={metadata?.animation_url} />
         </div>
       }
 

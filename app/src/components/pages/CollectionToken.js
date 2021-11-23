@@ -31,7 +31,7 @@ function CollectionToken() {
               )
           })
       )
-  }, [])
+  }, [id])
 
   return (
     <div className="Token">
@@ -75,14 +75,14 @@ function CollectionToken() {
 
           <div>
             <h3>Description</h3>
-            {metadata?.description} Description  Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description
+            {metadata?.description}
           </div>
 
           <div>
             <h3>Token Events</h3>
             {events && events.map(event => (
-              <div>
-                <p>{event.event}</p>
+              <div key={event.id}>
+                <p>{event.event} [{event.type}]</p>
                 <p>from: {event.returnValues.from}</p>
                 <p>to: {event.returnValues.to}</p>
               </div>

@@ -39,7 +39,6 @@ function CollectionItem({ token }) {
   const [metadata, setMetadata] = useState([])
 
   useEffect(() => {
-    console.log(token.uri)
     if (token.uri) {
       fetch(token.uri)
         .then(data => data.json().then(metadata => setMetadata(metadata)))
@@ -50,7 +49,7 @@ function CollectionItem({ token }) {
     <Link to={`/collection/${token.id}`}>
       <div className="Item">
         <div className="Image">
-          <img src={metadata?.image} />
+          <img src={metadata?.image} alt="" />
         </div>
         <p>
           #{token.id} {metadata?.name}

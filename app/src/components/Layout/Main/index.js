@@ -16,7 +16,7 @@ import Publisher from "../../pages/Publisher"
 import Drafts from '../../pages/Drafts'
 import CollectionPrivate from "../../pages/CollectionPrivate"
 
-import HowItWorks from "../../pages/static/HowItWorks"
+// import HowItWorks from "../../pages/static/HowItWorks"
 
 import './Main.css'
 
@@ -28,9 +28,9 @@ const Main = () => {
           <Home />
         </Route>
 
-        <Route path="/how-it-works">
+        {/* <Route path="/how-it-works">
           <HowItWorks />
-        </Route>
+        </Route> */}
 
         <Route path="/collection/:id">
           <Token />

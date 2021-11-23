@@ -51,10 +51,6 @@ function IDE() {
     }
   }, [account, id])
 
-  // useEffect(() => {
-  //   if (account) { reload() }
-  // }, [account])
-
   function reload() {
     iframeRef.current.src = `/preview/${account}/${id}/source/index.html`
     setLogs([])
@@ -102,9 +98,10 @@ function IDE() {
         <div className="Workspace">
           <div className="fileTree">
             {files && (
-              files.map(item => (
+              files.map((item, index) => (
                 <p
-                  className={item.name == file ? 'selected' : ''}
+                  key={index}
+                  className={item.name === file ? 'selected' : ''}
                   onClick={() => setFile(item.name)}
                 >{item.name}</p>
               ))
@@ -114,8 +111,6 @@ function IDE() {
           <Editor
             draftId={id}
             fileName={file}
-            previewFrame={iframeRef}
-            consoleFrame={consoleRef}
             setSaveMethod={setSaveMethod}
             reloadFrame={reload}
           />
@@ -136,6 +131,7 @@ function IDE() {
           </div>
 
           <iframe
+            title="Preview"
             className="Window"
             ref={iframeRef}
             onLoad={captureLogs}
@@ -151,14 +147,14 @@ function IDE() {
       )}
       {!loading && (
         <div className="Actions">
-          <a onClick={generateMedia}>Save</a>
+          <button href="#" onClick={generateMedia}>Save</button>
         </div>
       )}
     </div>
   )
 }
 
-function Editor({ draftId, fileName, previewFrame, consoleFrame, setSaveMethod, reloadFrame }) {
+function Editor({ draftId, fileName, setSaveMethod, reloadFrame }) {
   const { account } = useAuth()
 
   const editorRef = useRef()
@@ -176,10 +172,10 @@ function Editor({ draftId, fileName, previewFrame, consoleFrame, setSaveMethod, 
         })
       )
     }
-  })
+  }, [editor])
 
   useEffect(() => {
-    if (account) {
+    if (account && fileName) {
       const indexFile = `/preview/${account}/${draftId}/source/${fileName}`
 
       if (editor) {
@@ -208,7 +204,7 @@ function Editor({ draftId, fileName, previewFrame, consoleFrame, setSaveMethod, 
       },
       body: content
     }).then(async (res) => {
-      const data = await res.json()
+      await res.json()
       reloadFrame()
     })
   }

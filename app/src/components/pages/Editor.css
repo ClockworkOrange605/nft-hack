@@ -109,7 +109,7 @@
   padding-bottom: 15px;
 }
 
-.IDE .Actions a {
+.IDE .Actions button {
   color: #ffffff;
   background-color: transparent;
   border: 1px solid var(--primary-account-color);

@@ -29,8 +29,6 @@ function Minter() {
 
   useEffect(() => {
     if (account && id) {
-      console.log(`./storage/nfts/${account}/${id}/source/`)
-
       fetch(`/${account}/nft/${id}/`, {
         headers: {
           'x-auth-token': sessionStorage.getItem(account)
@@ -106,8 +104,7 @@ function Minter() {
           animation: form.get('animation')
         })
       }).then(async (res) => {
-        const data = await res.json()
-        console.log(data)
+        await res.json()
         history.push(`/account/nft/${id}/publish`)
       })
     }
@@ -177,12 +174,12 @@ function Minter() {
 
           <div className="Popup">
             <h1>Select Image</h1>
-            <a onClick={closePopup} className="CloseButton">❌</a>
+            <span onClick={closePopup} className="CloseButton">❌</span>
             <div className="Images">
               {new Array(9).fill("", 0, 9).map((p, i) =>
                 <picture
                   key={i}
-                  className={selectedImage == `http://localhost:4000/preview/${account}/${id}/media/preview_${i + 1}.png` ? 'selected' : ''}
+                  className={selectedImage === `http://localhost:4000/preview/${account}/${id}/media/preview_${i + 1}.png` ? 'selected' : ''}
                   onClick={() => {
                     selectImage(`http://localhost:4000/preview/${account}/${id}/media/preview_${i + 1}.png`)
                   }}
@@ -190,34 +187,6 @@ function Minter() {
                   <img width="250" alt={p} src={`http://localhost:4000/preview/${account}/${id}/media/preview_${i + 1}.png`} />
                 </picture>
               )}
-
-              {/* <picture className={selectedImage == `http://localhost:4000/preview/${account}/${id}/media/preview_1.png` ? 'selected' : ''}>
-                <img width="250" alt="" src={`http://localhost:4000/preview/${account}/${id}/media/preview_1.png`} />
-              </picture>
-              <picture className={selectedImage == `http://localhost:4000/preview/${account}/${id}/media/preview_2.png` ? 'selected' : ''}>
-                <img width="250" alt="" src={`http://localhost:4000/preview/${account}/${id}/media/preview_2.png`} />
-              </picture>
-              <picture className={selectedImage == `http://localhost:4000/preview/${account}/${id}/media/preview_3.png` ? 'selected' : ''}>
-                <img width="250" alt="" src={`http://localhost:4000/preview/${account}/${id}/media/preview_3.png`} />
-              </picture>
-              <picture className={selectedImage == `http://localhost:4000/preview/${account}/${id}/media/preview_4.png` ? 'selected' : ''}>
-                <img width="250" alt="" src={`http://localhost:4000/preview/${account}/${id}/media/preview_4.png`} />
-              </picture>
-              <picture className={selectedImage == `http://localhost:4000/preview/${account}/${id}/media/preview_5.png` ? 'selected' : ''}>
-                <img width="250" alt="" src={`http://localhost:4000/preview/${account}/${id}/media/preview_5.png`} />
-              </picture>
-              <picture className={selectedImage == `http://localhost:4000/preview/${account}/${id}/media/preview_6.png` ? 'selected' : ''}>
-                <img width="250" alt="" src={`http://localhost:4000/preview/${account}/${id}/media/preview_6.png`} />
-              </picture>
-              <picture className={selectedImage == `http://localhost:4000/preview/${account}/${id}/media/preview_7.png` ? 'selected' : ''}>
-                <img width="250" alt="" src={`http://localhost:4000/preview/${account}/${id}/media/preview_7.png`} />
-              </picture>
-              <picture className={selectedImage == `http://localhost:4000/preview/${account}/${id}/media/preview_8.png` ? 'selected' : ''}>
-                <img width="250" alt="" src={`http://localhost:4000/preview/${account}/${id}/media/preview_8.png`} />
-              </picture>
-              <picture className={selectedImage == `http://localhost:4000/preview/${account}/${id}/media/preview_9.png` ? 'selected' : ''}>
-                <img width="250" alt="" src={`http://localhost:4000/preview/${account}/${id}/media/preview_9.png`} />
-              </picture> */}
             </div>
             <div>
               {/* <button onClick={closePopup}>❌ Close</button> */}
