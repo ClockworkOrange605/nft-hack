@@ -67,10 +67,10 @@ function Token({ token }) {
     <Link to={`/collection/${token.id}`}>
       <div className="Item">
         <img width="250" src={metadata?.image} alt="" />
-        <p>
+        <p style={{ "line-height": "28px", "padding-bottom": "20px" }}>
           #{token.id} {metadata?.name}
 
-          <span style={{ color: '#888888', float: 'right' }}>
+          <span style={{ color: '#888888', float: 'left' }}>
             0x
             <span style={{ 'color': `#${token.owner.slice(2, 8)}` }}>
               {token.owner.slice(2, 8)}

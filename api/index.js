@@ -30,7 +30,6 @@ const config = {
   },
   rpc: {
     uri: process.env.ETHER_RPC || 'mongodb://localhost:27017',
-    //
     contract: process.env.ETHER_CONTRACT || '0x9B93Ce18BaEEfB25828ECb2968a5768f92A6D7f6',
     mint_value: '100000000000000000'
   },
@@ -145,8 +144,8 @@ api.post('/:address/nft/:id/update', authMiddleware, async (req, res) => {
   const { metadata, image, animation } = req.body
   const { account } = res.locals
 
-  const imageFile = fs.readFileSync(image.replace('http://localhost:4000/preview', './storage/nfts'))
-  const animationFile = fs.readFileSync(animation.replace('http://localhost:4000/preview', './storage/nfts'))
+  const imageFile = fs.readFileSync(image.replace('/preview', './storage/nfts'))
+  const animationFile = fs.readFileSync(animation.replace('/preview', './storage/nfts'))
 
   const uploadResult = await Promise.all([
     axios.post(`${config.ipfs.nft_storage_uri}/upload`, imageFile, {
@@ -736,7 +735,7 @@ api.post('/:address/nft/:id/mint', authMiddleware, async (req, res) => {
   const tx = {
     from: account,
     to: config.rpc.contract,
-    value: web3.utils.toHex(config.rpc.mint_value),
+    // value: web3.utils.toHex(config.rpc.mint_value),
     gasPrice: web3.utils.toHex(gasPrice),
     gas: (await call.estimateGas()).toString(),
     data: await call.encodeABI()

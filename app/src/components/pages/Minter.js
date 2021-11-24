@@ -18,7 +18,7 @@ function Minter() {
   const [loading, setLoading] = useState(true)
   const [loaderMessage, setloaderMessage] = useState()
 
-  const [selectedImage, selectImage] = useState(`http://localhost:4000/preview/${account}/${id}/media/preview_5.png`)
+  const [selectedImage, selectImage] = useState(`/preview/${account}/${id}/media/preview_5.png`)
 
   function sizeConverter(Num = 0, dec = 2) {
     if (Num < 1000)
@@ -163,8 +163,8 @@ function Minter() {
 
             <label>
               <span>Animation</span>
-              <video width="450" muted autoPlay loop controls controlsList="nodownload" src={`http://localhost:4000/preview/${account}/${id}/media/demo.mp4`} />
-              <input name="animation" type="hidden" defaultValue={`http://localhost:4000/preview/${account}/${id}/media/demo.mp4`} />
+              <video width="450" muted autoPlay loop controls controlsList="nodownload" src={`/preview/${account}/${id}/media/demo.mp4`} />
+              <input name="animation" type="hidden" defaultValue={`/preview/${account}/${id}/media/demo.mp4`} />
             </label>
           </div>
 
@@ -179,12 +179,12 @@ function Minter() {
               {new Array(9).fill("", 0, 9).map((p, i) =>
                 <picture
                   key={i}
-                  className={selectedImage === `http://localhost:4000/preview/${account}/${id}/media/preview_${i + 1}.png` ? 'selected' : ''}
+                  className={selectedImage === `/preview/${account}/${id}/media/preview_${i + 1}.png` ? 'selected' : ''}
                   onClick={() => {
-                    selectImage(`http://localhost:4000/preview/${account}/${id}/media/preview_${i + 1}.png`)
+                    selectImage(`/preview/${account}/${id}/media/preview_${i + 1}.png`)
                   }}
                 >
-                  <img width="250" alt={p} src={`http://localhost:4000/preview/${account}/${id}/media/preview_${i + 1}.png`} />
+                  <img width="250" alt={p} src={`/preview/${account}/${id}/media/preview_${i + 1}.png`} />
                 </picture>
               )}
             </div>
