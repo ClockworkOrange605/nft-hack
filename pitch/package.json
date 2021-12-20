@@ -1,7 +1,8 @@
 {
   "scripts": {
     "start": "mdx-deck main.mdx",
-    "build": "mdx-deck build main.mdx"
+    "build": "mdx-deck build main.mdx && mv public/ docs/pitch",
+    "serve": "serve ../docs",
   },
   "devDependencies": {
     "mdx-deck": "^4.1.1",
