@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "start": "mdx-deck main.mdx",
+    "build": "mdx-deck build main.mdx"
+  },
+  "devDependencies": {
+    "mdx-deck": "^4.1.1",
+    "serve": "^13.0.2"
+  }
+}
